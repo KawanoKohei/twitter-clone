@@ -51,23 +51,23 @@ class User extends Authenticatable
     ];
 
     /**
-     * フォローデータ取得リレーション
+     * フォローデータリレーション
      *
      * @return BelongsToMany
      */
     public function follows(): BelongsToMany
     {
-        return $this->belongsToMany(self::class, 'followers', 'following_id', 'follower_id');
+        return $this->belongsToMany(self::class, 'followers', 'following_id', 'followed_id');
     }
 
     /**
-     * フォロワーデータ取得リレーション
+     * フォロワーデータリレーション
      *
      * @return BelongsToMany
      */
     public function followers(): BelongsToMany
     {
-        return $this->belongsToMany(Follower::class, 'follower_id', 'following_id');
+        return $this->belongsToMany(self::class, 'followers', 'followed_id', 'following_id');
     }
 
     /**

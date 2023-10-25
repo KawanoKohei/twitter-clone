@@ -92,11 +92,11 @@ class UserController extends Controller
     public function follow(Follower $follower, User $user):RedirectResponse
     {
         try {
-            $follower->follower_id = Auth::id();
+            $follower->following_id = Auth::id();
             $bool = $user->isFollowing($user->id, Auth::id());
             if (!$bool)
             {
-                $follower->following_id = $user->id;
+                $follower->followed_id = $user->id;
                 $this->authorize('follow',$follower);
                 $follower->follow();
             } else{
