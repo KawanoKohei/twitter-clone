@@ -67,7 +67,7 @@ class User extends Authenticatable
      */
     public function followers(): BelongsToMany
     {
-        return $this->belongsToMany(Follower::class, 'follower_id', 'following_id');
+        return $this->belongsToMany(self::class, 'followers', 'follower_id', 'following_id');
     }
 
     /**
@@ -127,6 +127,11 @@ class User extends Authenticatable
     public function isFollowing(int $id, int $loginUserId): bool
     {
         return Follower::where('following_id',$id)->where('follower_id', $loginUserId)->exists();
+    }
+
+    public function getAllFollowers(int $loginUserId)
+    {
+        return $this->followers($loginUserId)->get();
     }
 }  
 
