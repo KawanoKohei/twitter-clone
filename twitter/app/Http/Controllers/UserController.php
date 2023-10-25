@@ -92,13 +92,13 @@ class UserController extends Controller
     public function follow(Follower $follower, User $user):RedirectResponse
     {
         try {
-            $follower->following_id = Auth::id();
             $bool = $user->isFollowing(Auth::id(), $user->id);
             if (!$bool)
             {
+                $follower->following_id = Auth::id();
                 $follower->followed_id = $user->id;
                 $this->authorize('follow',$follower);
-                $follower->follow();
+                Auth::user()->follow($user->id);
             } else{
                 return redirect()->route('user.index')->with('already', '既にフォローしています');
             }
@@ -114,17 +114,16 @@ class UserController extends Controller
     /**
      * フォロー解除
      *
-     * @param Follower $follower
      * @param User $user
      * @return void
      */
-    public function unfollow(Follower $follower, User $user):RedirectResponse
+    public function unfollow(User $user):RedirectResponse
     {
         try {
             $bool = $user->isFollowing(Auth::id(), $user->id);
             if ($bool)
             {
-                $follower->unfollow(Auth::id(), $user->id);
+                Auth::user()->unfollow($user->id);
             } else{
                 return redirect()->route('user.index')->with('already', '既にフォロー解除しています');
             }
