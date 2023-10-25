@@ -9,7 +9,7 @@ class Follower extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['following_id', 'follower_id'];
+    protected $fillable = ['following_id', 'followed_id'];
 
     /**
      * フォロー
@@ -28,9 +28,9 @@ class Follower extends Model
      * @param integer $loginUserId
      * @return void
      */
-    public function unfollow(int $id, int $loginUserId):void
+    public function unfollow(int $loginUserId, int $id):void
     {
-        $follow = Follower::where('following_id',$id)->where('follower_id', $loginUserId)->first();
+        $follow = Follower::where('following_id', $loginUserId)->where('followed_id', $id)->first();
         $follow->delete();
     }
 }

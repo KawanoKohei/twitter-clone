@@ -93,7 +93,7 @@ class UserController extends Controller
     {
         try {
             $follower->following_id = Auth::id();
-            $bool = $user->isFollowing($user->id, Auth::id());
+            $bool = $user->isFollowing(Auth::id(), $user->id);
             if (!$bool)
             {
                 $follower->followed_id = $user->id;
@@ -121,10 +121,10 @@ class UserController extends Controller
     public function unfollow(Follower $follower, User $user):RedirectResponse
     {
         try {
-            $bool = $user->isFollowing($user->id, Auth::id());
+            $bool = $user->isFollowing(Auth::id(), $user->id);
             if ($bool)
             {
-                $follower->unfollow($user->id, Auth::id());
+                $follower->unfollow(Auth::id(), $user->id);
             } else{
                 return redirect()->route('user.index')->with('already', '既にフォロー解除しています');
             }

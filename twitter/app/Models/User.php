@@ -124,9 +124,9 @@ class User extends Authenticatable
      * @param integer $loginUserId
      * @return boolean
      */
-    public function isFollowing(int $id, int $loginUserId): bool
+    public function isFollowing(int $loginUserId, int $id ): bool
     {
-        return Follower::where('following_id',$id)->where('follower_id', $loginUserId)->exists();
+        return Follower::where('following_id', $loginUserId)->where('followed_id', $id)->exists();
     }
 }  
 

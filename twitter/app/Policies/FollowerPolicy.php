@@ -29,6 +29,6 @@ class FollowerPolicy
      */
     public function follow(User $user, Follower $follow):bool
     {
-        return $user->id !== $follow->following_id;
+        return $user->id !== $follow->followed_id;
     }
 }
