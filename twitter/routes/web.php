@@ -37,6 +37,10 @@ Route::group(['middleware' => 'auth'], function () {
         Route::delete('delete',[UserController::class, 'delete'])->name('.delete');
         //ユーザー一覧
         Route::get('index', [UserController::class, 'index'])->name('.index');
+        //フォロー
+        Route::post('follow/{user}', [UserController::class, 'follow'])->name('.follow');
+        //フォロー解除
+        Route::delete('unfollow/{user}', [UserController::class, 'unfollow'])->name('.unfollow');
     });
     //ツイート機能
     Route::group(['prefix' => 'tweet', 'as' => 'tweet'], function()
@@ -56,8 +60,4 @@ Route::group(['middleware' => 'auth'], function () {
         //ツイートの削除
         Route::delete('delete/{tweet}', [TweetController::class, 'delete'])->name('.delete');
     });
-    //フォロー
-    Route::post('follow/{user}', [UserController::class, 'follow'])->name('follow');
-    //フォロー解除
-    Route::delete('unfollow/{user}', [UserController::class, 'unfollow'])->name('unfollow');
 });

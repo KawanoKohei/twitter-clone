@@ -28,13 +28,13 @@
                                     </div>
                                     @if(Auth::id() !== $user->id)
                                         @if(Auth::user()->isFollowing($user->id, Auth::id()))
-                                            <form method="post" action="{{ route('unfollow', $user) }}">
+                                            <form method="post" action="{{ route('user.unfollow', $user) }}">
                                                 @csrf
                                                 @method('delete')
                                                 <input type="submit" value="フォロー解除">
                                             </form>
                                         @else
-                                            <form method="post" action="{{ route('follow', $user) }}">
+                                            <form method="post" action="{{ route('user.follow', $user) }}">
                                                 @csrf
                                                 <input type="submit" value="フォロー">
                                             </form>
