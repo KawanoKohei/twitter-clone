@@ -70,19 +70,6 @@ class UserController extends Controller
     }
 
     /**
-     * ユーザー一覧の表示
-     *
-     * @return View
-     */
-    public function index():View
-    {
-        $user = new User();
-        $users = $user->index();
-        
-        return view('user.index',compact('users'));
-    }
-
-    /**
      * フォロー
      *
      * @param Follower $follower
@@ -92,8 +79,7 @@ class UserController extends Controller
     public function follow(Follower $follower, User $user):RedirectResponse
     {
         try {
-            $bool = $user->isFollowing(Auth::id(), $user->id);
-            if (!$bool)
+            if (!$follower->isFollowing(Auth::id(), $user->id))
             {
                 $follower->following_id = Auth::id();
                 $follower->followed_id = $user->id;
@@ -117,11 +103,10 @@ class UserController extends Controller
      * @param User $user
      * @return void
      */
-    public function unfollow(User $user):RedirectResponse
+    public function unfollow(Follower $follower, User $user):RedirectResponse
     {
         try {
-            $bool = $user->isFollowing(Auth::id(), $user->id);
-            if ($bool)
+            if ($follower->isFollowing(Auth::id(), $user->id))
             {
                 Auth::user()->unfollow($user->id);
             } else{
