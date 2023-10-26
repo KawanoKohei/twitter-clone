@@ -148,6 +148,19 @@ class UserController extends Controller
     {
         $users = Auth::user()->getAllFollowed();
 
+        return view('user.followed',compact('users'));
+    }
+
+    /**
+     * フォロワー表示
+     *
+     * @param User $user
+     * @return View
+     */
+    public function follower(User $user):View
+    {
+        $users = Auth::user()->getAllFollower();
+
         return view('user.follower',compact('users'));
     }
 }

@@ -68,7 +68,7 @@ class User extends Authenticatable
      */
     public function followers(): BelongsToMany
     {
-        return $this->belongsToMany(self::class, 'followers', 'follower_id', 'following_id');
+        return $this->belongsToMany(self::class, 'followers', 'followed_id', 'following_id');
     }
 
     /**
@@ -160,6 +160,17 @@ class User extends Authenticatable
     public function getAllFollowed():Collection
     {
         return $this->follows()->get();
+    }
+
+    /**
+     * フォロワー表示
+     *
+     * @return Collection
+     */
+    public function getAllFollower():Collection
+    {
+        // dd($this->id);
+        return $this->followers()->get();
     }
 }  
 

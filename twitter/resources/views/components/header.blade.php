@@ -43,6 +43,9 @@
                             <a class="dropdown-item" href="{{ route('user.followed') }}">
                                 {{ "フォロー" }}
                             </a>
+                            <a class="dropdown-item" href="{{ route('user.follower') }}">
+                                {{ "フォロワー" }}
+                            </a>
                             <a class="dropdown-item" href="{{ route('user.index') }}">
                                 {{ "ユーザー一覧" }}
                             </a>
