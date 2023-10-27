@@ -13,7 +13,7 @@
                                 {{ session('status') }}
                             </div>
                         @endif
-                        <button onclick="location.href='{{ route('tweet') }}'">ツイート</button>
+                        <button onclick="location.href='{{ route('tweet.') }}'">ツイート</button>
                         <br>
                     </div>
                 </div>

@@ -14,12 +14,12 @@ class Follower extends Model
     /**
      * 既存フォローの確認
      *
-     * @param integer $id
-     * @param integer $loginUserId
+     * @param integer $FollowingId
+     * @param integer $followedId
      * @return boolean
      */
-    public function isFollowing(int $loginUserId, int $id ): bool
+    public function isFollowing(int $FollowingId, int $followedId ): bool
     {
-        return Follower::where('following_id', $loginUserId)->where('followed_id', $id)->exists();
+        return Follower::where('following_id', $FollowingId)->where('followed_id', $followedId)->exists();
     }
 }

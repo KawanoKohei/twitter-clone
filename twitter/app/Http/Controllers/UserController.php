@@ -70,6 +70,19 @@ class UserController extends Controller
     }
 
     /**
+     * ユーザー一覧の表示
+     *
+     * @return View
+     */
+    public function index(Follower $follower):View
+    {
+        $user = new User();
+        $users = $user->index();
+
+        return view('user.index',compact('users','follower'));
+    }
+
+    /**
      * フォロー
      *
      * @param Follower $follower
@@ -79,17 +92,21 @@ class UserController extends Controller
     public function follow(Follower $follower, User $user):RedirectResponse
     {
         try {
+            $result = 'already';
+            $flashMessage = '既にフォローしています';
+
             if (!$follower->isFollowing(Auth::id(), $user->id))
             {
                 $follower->following_id = Auth::id();
                 $follower->followed_id = $user->id;
                 $this->authorize('follow',$follower);
                 Auth::user()->follow($user->id);
-            } else{
-                return redirect()->route('user.index')->with('already', '既にフォローしています');
-            }
 
-            return redirect()->route('user.index')->with('success', 'フォローしました！');
+                $result = 'success';
+                $flashMessage = 'フォローしました！';
+            } 
+
+            return redirect()->route('user.index')->with($result, $flashMessage);
         } catch(\Exception $e) {
             Log::error($e);
 
@@ -103,17 +120,21 @@ class UserController extends Controller
      * @param User $user
      * @return void
      */
-    public function unfollow(Follower $follower, User $user):RedirectResponse
+    public function unfollow(Follower $follower, User $user)
     {
         try {
+            $result = 'already';
+            $flashMessage = '既にフォロー解除しています';
+
             if ($follower->isFollowing(Auth::id(), $user->id))
             {
                 Auth::user()->unfollow($user->id);
-            } else{
-                return redirect()->route('user.index')->with('already', '既にフォロー解除しています');
-            }
+                
+                $result = 'success';
+                $flashMessage = 'フォロー解除しました！';
+            } 
 
-            return redirect()->route('user.index')->with('success', 'フォロー解除しました！');
+            return redirect()->route('user.index')->with($result, $flashMessage);
         } catch(\Exception $e) {
             Log::error($e);
 

@@ -5,8 +5,8 @@ namespace App\Models;
 use App\Models\Follower;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Http\Request;
 use Illuminate\Notifications\Notifiable;
@@ -57,7 +57,8 @@ class User extends Authenticatable
      */
     public function follows(): BelongsToMany
     {
-        return $this->belongsToMany(self::class, 'followers', 'following_id', 'followed_id')->withPivot('created_at','updated_at');
+        return $this->belongsToMany(self::class, 'followers', 'following_id', 'followed_id')
+            ->withPivot('created_at','updated_at');
     }
 
     /**
@@ -115,18 +116,6 @@ class User extends Authenticatable
     public function index():LengthAwarePaginator
     {
         return $this->orderBy('id', 'asc')->paginate(5);
-    }
-
-    /**
-     * 既存フォローの確認
-     *
-     * @param integer $id
-     * @param integer $loginUserId
-     * @return boolean
-     */
-    public function isFollowing(int $loginUserId, int $id ): bool
-    {
-        return Follower::where('following_id', $loginUserId)->where('followed_id', $id)->exists();
     }
 
     /**
