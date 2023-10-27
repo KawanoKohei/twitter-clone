@@ -74,4 +74,13 @@ class Tweet extends Model
     {
         $this->delete();
     }
+
+    public function search(string $searchWord)
+    {
+        return $this->query()
+            ->with('user')
+            ->where('tweet','like','%' . $searchWord . '%')
+            ->orderBy('updated_at', 'desc')
+            ->paginate(5);
+    }
 }

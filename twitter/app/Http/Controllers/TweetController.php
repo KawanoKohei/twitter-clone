@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateTweetRequest;
+use App\Http\Requests\SearchWordRequest;
 use App\Http\Requests\UpdateTweetRequest;
 use App\Models\Tweet;
 use Illuminate\Http\RedirectResponse;
@@ -128,5 +129,15 @@ class TweetController extends Controller
             
             return redirect()->route('tweet.index')->with('error', '削除に失敗しました！');
         }
+    }
+
+    public function search(SearchWordRequest $request, Tweet $tweet)//バリデーションを追加
+    {
+        $searchWord = $request->input('searchWord');
+        // dd($searchWord);
+        $tweets = $tweet->search($searchWord);
+        // dd($tweets);
+
+        return view('tweet.index',compact('tweets'));
     }
 }
