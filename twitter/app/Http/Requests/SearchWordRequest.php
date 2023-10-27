@@ -24,7 +24,7 @@ class SearchWordRequest extends FormRequest
     public function rules():array
     {
         return [
-            'searchWord' => 'required|string|max:200'
+            'searchWord' => 'nullable|string|max:10'
         ];
     }
 
@@ -36,8 +36,7 @@ class SearchWordRequest extends FormRequest
     public function messages():array
     {
         return [
-            'tweet.required' => '検索ワードを入力してください',
-            'tweet.between' => '200文字以内で入力してください',
+            'searchWord.max' => '10文字以内で入力してください',
         ];
     }
 }

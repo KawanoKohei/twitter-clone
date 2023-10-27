@@ -75,7 +75,13 @@ class Tweet extends Model
         $this->delete();
     }
 
-    public function search(string $searchWord)
+    /**
+     * クエリ検索機能
+     *
+     * @param string $searchWord
+     * @return LengthAwarePaginator
+     */
+    public function search(string $searchWord):LengthAwarePaginator
     {
         return $this->query()
             ->with('user')

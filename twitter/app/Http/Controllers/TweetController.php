@@ -131,12 +131,19 @@ class TweetController extends Controller
         }
     }
 
-    public function search(SearchWordRequest $request, Tweet $tweet)//バリデーションを追加
+    /**
+     * クエリ検索機能
+     *
+     * @param Tweet $tweet
+     * @return View|RedirectResponse
+     */
+    public function search(SearchWordRequest $request, Tweet $tweet):View|RedirectResponse
     {
         $searchWord = $request->input('searchWord');
-        // dd($searchWord);
+        if($searchWord === null){
+            return redirect()->route('tweet.index')->with('info', '検索ワードを入力してください');
+        }
         $tweets = $tweet->search($searchWord);
-        // dd($tweets);
 
         return view('tweet.index',compact('tweets'));
     }

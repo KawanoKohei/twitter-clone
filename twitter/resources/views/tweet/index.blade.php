@@ -14,18 +14,21 @@
                             <div class="alert alert-danger">
                                 {{ session('error') }}
                             </div>
+                        @elseif(session('info'))
+                            <div class="alert alert-info" role="alert">
+                                {{ session('info') }}
+                            </div>
                         @endif
                         <h5 class="card-title">ツイート一覧</h5>
                         <form method="get" action="{{ route('tweet.search') }}">
                             @csrf
                             @error('searchWord')
-                                <div class="alert alert-danger">
-                                    {{-- ここのメッセージが指定したメッセージにならない --}}
-                                    <h5>{{ $message }}</h5>
+                                <div class="alert alert-info">
+                                    <p>{{ $message }}</p>
                                 </div>
                             @enderror
                             <div class="col-auto">
-                                <input type="textarea" name="searchWord" class="form-control" placeholder="検索ワードを入力" value="{{ old('searchWord') }}" >
+                                <input type="text" name="searchWord" class="form-control" placeholder="検索ワードを入力" value="{{ old('searchWord') }}" >
                             </div>
                             <div class="col-auto">
                                 <button type="submit" class="btn btn-primary mb-3">検索</button>
