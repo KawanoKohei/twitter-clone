@@ -169,7 +169,6 @@ class User extends Authenticatable
      */
     public function getAllFollower():Collection
     {
-        // dd($this->id);
         return $this->followers()->get();
     }
 }  
