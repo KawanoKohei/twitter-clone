@@ -140,7 +140,7 @@ class User extends Authenticatable
     {
         $this->follows()->detach($user_id);
     }
-    
+
     /**
      * フォロー表示
      *
@@ -156,7 +156,7 @@ class User extends Authenticatable
      *
      * @return Collection
      */
-    public function getAllFollower():Collection
+    public function getAllFollowers():Collection
     {
         return $this->followers()->get();
     }

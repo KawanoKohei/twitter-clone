@@ -42,9 +42,9 @@ Route::group(['middleware' => 'auth'], function () {
         //フォロー解除
         Route::delete('unfollow/{user}', [UserController::class, 'unfollow'])->name('unfollow');
         //フォロー表示
-        Route::get('followed', [UserController::class, 'followed'])->name('followed');
+        Route::get('followed', [UserController::class, 'getAllFollowed'])->name('followed');
         //フォロワー表示
-        Route::get('follower', [UserController::class, 'follower'])->name('follower');
+        Route::get('follower', [UserController::class, 'getAllFollowers'])->name('follower');
     });
     //ツイート機能
     Route::group(['prefix' => 'tweet', 'as' => 'tweet.'], function()

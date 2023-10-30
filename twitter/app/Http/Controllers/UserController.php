@@ -145,10 +145,9 @@ class UserController extends Controller
     /**
      * フォロー表示
      *
-     * @param User $user
      * @return View
      */
-    public function followed(User $user):View
+    public function getAllFollowed():View
     {
         $users = Auth::user()->getAllFollowed();
 
@@ -158,12 +157,11 @@ class UserController extends Controller
     /**
      * フォロワー表示
      *
-     * @param User $user
      * @return View
      */
-    public function follower(User $user):View
+    public function getAllFollowers():View
     {
-        $users = Auth::user()->getAllFollower();
+        $users = Auth::user()->getAllFollowers();
 
         return view('user.follower',compact('users'));
     }
