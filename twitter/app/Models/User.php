@@ -142,7 +142,7 @@ class User extends Authenticatable
     }
 
     /**
-     * フォロー表示
+     * フォローの取得
      *
      * @return Collection
      */
@@ -152,7 +152,7 @@ class User extends Authenticatable
     }
 
     /**
-     * フォロワー表示
+     * フォロワーの取得
      *
      * @return Collection
      */
