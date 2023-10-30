@@ -140,10 +140,14 @@ class TweetController extends Controller
     public function search(SearchWordRequest $request, Tweet $tweet):View|RedirectResponse
     {
         $searchWord = $request->input('searchWord');
-        if($searchWord === null){
+
+        if ($searchWord === null) {
             return redirect()->route('tweet.index')->with('info', '検索ワードを入力してください');
         }
-        $tweets = $tweet->search($searchWord);
+
+        $spaceConversion = mb_convert_kana($searchWord, 's');
+        $wordArraySearchWord = preg_split('/[\s,]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
+        $tweets = $tweet->search($wordArraySearchWord);
 
         return view('tweet.index',compact('tweets'));
     }

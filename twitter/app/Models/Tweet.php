@@ -78,14 +78,16 @@ class Tweet extends Model
     /**
      * クエリ検索機能
      *
-     * @param string $searchWord
+     * @param array $wordArraySearchWord
      * @return LengthAwarePaginator
      */
-    public function search(string $searchWord):LengthAwarePaginator
+    public function search(array $wordArraySearchWord):LengthAwarePaginator
     {
-        return $this->query()
-            ->with('user')
-            ->where('tweet','like','%' . $searchWord . '%')
+        $query = Tweet::query();
+        foreach ($wordArraySearchWord as $searchWord) {
+            $query->where('tweet', 'like', '%'.$searchWord.'%');
+        }
+        return $query->with('user')
             ->orderBy('updated_at', 'desc')
             ->paginate(5);
     }
