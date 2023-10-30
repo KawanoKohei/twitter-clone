@@ -27,7 +27,7 @@
                                         <p>{{ $user['name'] }}</p>
                                     </div>
                                     @if(Auth::id() !== $user->id)
-                                        @if(Auth::user()->isFollowing(Auth::id(), $user->id))
+                                        @if($follower->isFollowing(Auth::id(), $user->id))
                                             <form method="post" action="{{ route('user.unfollow', $user) }}">
                                                 @csrf
                                                 @method('delete')
