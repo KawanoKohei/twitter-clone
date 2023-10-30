@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Follower;
+use App\Models\Favorite;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -138,6 +139,39 @@ class User extends Authenticatable
     public function unfollow(int $user_id):void
     {
         $this->follows()->detach($user_id);
+    }
+
+    /**
+     * ツイートモデルとの多対多リレーション
+     *
+     * @return BelongsToMany
+     */
+    public function favoriteTweets(): BelongsToMany
+    {
+        return $this->belongsToMany(Tweet::class, 'favorites', 'user_id', 'tweet_id')
+            ->withPivot('created_at','updated_at');
+    }
+
+    /**
+     * いいね機能
+     *
+     * @param integer $tweet_id
+     * @return void
+     */
+    public function favorite(int $tweet_id):void
+    {
+        $this->favoriteTweets()->attach($tweet_id);
+    }
+
+    /**
+     * いいね解除機能
+     *
+     * @param integer $tweet_id
+     * @return void
+     */
+    public function unfavorite(int $tweet_id):void
+    {
+        $this->favoriteTweets()->detach($tweet_id);
     }
 }  
 

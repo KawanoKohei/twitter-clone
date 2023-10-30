@@ -41,6 +41,10 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('follow/{user}', [UserController::class, 'follow'])->name('follow');
         //フォロー解除
         Route::delete('unfollow/{user}', [UserController::class, 'unfollow'])->name('unfollow');
+        //いいね
+        Route::post('favorite/{id}', [UserController::class, 'favorite'])->name('favorite');
+        //いいね解除
+        Route::delete('unfavorite/{id}', [UserController::class, 'unfavorite'])->name('unfavorite');
     });
     //ツイート機能
     Route::group(['prefix' => 'tweet', 'as' => 'tweet.'], function()

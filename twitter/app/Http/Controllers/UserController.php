@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserEditRequest;
+use App\Models\Favorite;
 use App\Models\Follower;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
@@ -139,6 +140,52 @@ class UserController extends Controller
             Log::error($e);
 
             return redirect()->route('user.index')->with('error', 'フォロー解除に失敗しました！');
+        }
+    }
+
+    /**
+     * いいね機能
+     *
+     * @param Favorite $favorite
+     * @param integer $tweetId
+     * @return RedirectResponse
+     */
+    public function favorite(Favorite $favorite, int $tweetId):RedirectResponse
+    {
+        try {
+            if (!$favorite->isFavorite(Auth::id(), $tweetId))
+            {
+                Auth::user()->favorite($tweetId);
+            } 
+
+            return redirect()->route('tweet.index');
+        } catch(\Exception $e) {
+            Log::error($e);
+
+            return redirect()->route('tweet.index')->with('error', 'いいねできませんでした！');
+        }
+    }
+
+    /**
+     * いいね解除機能
+     *
+     * @param Favorite $favorite
+     * @param integer $tweetId
+     * @return RedirectResponse
+     */
+    public function unfavorite(Favorite $favorite, int $tweetId):RedirectResponse
+    {
+        try {
+            if ($favorite->isFavorite(Auth::id(), $tweetId))
+            {
+                Auth::user()->unfavorite($tweetId);
+            } 
+
+            return redirect()->route('tweet.index');
+        } catch(\Exception $e) {
+            Log::error($e);
+
+            return redirect()->route('tweet.index')->with('error', 'いいねできませんでした！');
         }
     }
 }

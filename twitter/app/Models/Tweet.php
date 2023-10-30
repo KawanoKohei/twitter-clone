@@ -74,4 +74,14 @@ class Tweet extends Model
     {
         $this->delete();
     }
+
+    /**
+     * ユーザーモデルとの多対多リレーション
+     *
+     * @return BelongsToMany
+     */
+    public function favoriteUsers(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'favorites', 'tweet_id', 'user_id');
+    }
 }

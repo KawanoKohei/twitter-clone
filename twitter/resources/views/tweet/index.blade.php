@@ -24,6 +24,18 @@
                                         {{ $tweet->tweet }}
                                     </li>
                                 </a>
+                                @if($favorite->isFavorite(Auth::id(), $tweet->id))
+                                    <form method="post" action="{{ route('user.unfavorite', $tweet->id) }}">
+                                        @csrf
+                                        @method('delete')
+                                        <input type="submit" value="いいね解除">
+                                    </form>
+                                @else
+                                    <form method="post" action="{{ route('user.favorite', $tweet->id) }}">
+                                        @csrf
+                                        <input type="submit" value="いいね">
+                                    </form>
+                                @endif
                             </ul>
                         @endforeach
                         {{ $tweets->links() }}

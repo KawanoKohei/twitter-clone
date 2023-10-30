@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateTweetRequest;
 use App\Http\Requests\UpdateTweetRequest;
+use App\Models\Favorite;
 use App\Models\Tweet;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -45,12 +46,12 @@ class TweetController extends Controller
      *
      * @return View
      */
-    public function index():View
+    public function index(Favorite $favorite):View
     {
         $tweets = new Tweet();
         $tweets = $tweets->index();
         
-        return view('tweet.index',compact('tweets'));
+        return view('tweet.index',compact('tweets', 'favorite'));
     }
 
     /**
