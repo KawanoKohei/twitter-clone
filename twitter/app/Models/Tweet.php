@@ -81,12 +81,14 @@ class Tweet extends Model
      * @param array $wordArraySearchWord
      * @return LengthAwarePaginator
      */
-    public function search(array $wordArraySearchWord):LengthAwarePaginator
+    public function searchByQuery(array $wordArrayQuery):LengthAwarePaginator
     {
         $query = Tweet::query();
-        foreach ($wordArraySearchWord as $searchWord) {
-            $query->where('tweet', 'like', '%'.$searchWord.'%');
+
+        foreach ($wordArrayQuery as $word) {
+            $query->where('tweet', 'like', '%'.$word.'%');
         }
+
         return $query->with('user')
             ->orderBy('updated_at', 'desc')
             ->paginate(5);

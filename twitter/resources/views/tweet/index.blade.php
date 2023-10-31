@@ -28,7 +28,7 @@
                                 </div>
                             @enderror
                             <div class="col-auto">
-                                <input type="text" name="searchWord" class="form-control" placeholder="検索ワードを入力" value="{{ old('searchWord') }}" >
+                                <input type="text" name="query" class="form-control" placeholder="検索ワードを入力" >
                             </div>
                             <div class="col-auto">
                                 <button type="submit" class="btn btn-primary mb-3">検索</button>

@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
+use App\Models\Follower;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Http\Request;
@@ -49,6 +52,27 @@ class User extends Authenticatable
     ];
 
     /**
+     * フォローデータリレーション
+     *
+     * @return BelongsToMany
+     */
+    public function follows(): BelongsToMany
+    {
+        return $this->belongsToMany(self::class, 'followers', 'following_id', 'followed_id')
+            ->withPivot('created_at','updated_at');
+    }
+
+    /**
+     * フォロワーデータリレーション
+     *
+     * @return BelongsToMany
+     */
+    public function followers(): BelongsToMany
+    {
+        return $this->belongsToMany(self::class, 'followers', 'followed_id', 'following_id');
+    }
+
+    /**
      * ユーザー詳細情報を取得
      *
      * @param int $id
@@ -92,7 +116,48 @@ class User extends Authenticatable
      */
     public function index():LengthAwarePaginator
     {
-        return User::whereNull('deleted_at')->orderBy('id', 'asc')->paginate(5);
+        return $this->orderBy('id', 'asc')->paginate(5);
     }
-}  
 
+    /**
+     * フォロー
+     *
+     * @param integer $user_id
+     * @return void
+     */
+    public function follow(int $user_id):void
+    {
+        $this->follows()->attach($user_id);
+    }
+
+    /**
+     * フォロー解除
+     *
+     * @param integer $user_id
+     * @return void
+     */
+    public function unfollow(int $user_id):void
+    {
+        $this->follows()->detach($user_id);
+    }
+
+    /**
+     * フォローの取得
+     *
+     * @return Collection
+     */
+    public function getAllFollows():Collection
+    {
+        return $this->follows()->get();
+    }
+
+    /**
+     * フォロワーの取得
+     *
+     * @return Collection
+     */
+    public function getAllFollowers():Collection
+    {
+        return $this->followers()->get();
+    }
+} 

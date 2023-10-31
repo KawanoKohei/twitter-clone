@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SearchWordRequest extends FormRequest
+class QueryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,7 @@ class SearchWordRequest extends FormRequest
     public function rules():array
     {
         return [
-            'searchWord' => 'nullable|string|max:200'
+            'query' => 'nullable|string|max:200'
         ];
     }
 
@@ -36,7 +36,7 @@ class SearchWordRequest extends FormRequest
     public function messages():array
     {
         return [
-            'searchWord.max' => '200文字以内で入力してください',
+            'query.max' => '200文字以内で入力してください',
         ];
     }
 }
