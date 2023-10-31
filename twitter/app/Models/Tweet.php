@@ -85,9 +85,4 @@ class Tweet extends Model
     {
         return $this->belongsToMany(User::class, 'favorites', 'tweet_id', 'user_id');
     }
-
-    public function getFavoriteCount()
-    {
-        return $this->favoriteUsers()->count();
-    }
 }
