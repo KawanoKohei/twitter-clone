@@ -40,6 +40,12 @@
                             <a class="dropdown-item" href="{{ route('user.detail',['id' => Auth::id()]) }}">
                                 {{ "プロフィール" }}
                             </a>
+                            <a class="dropdown-item" href="{{ route('user.follows') }}">
+                                {{ "フォロー" }}
+                            </a>
+                            <a class="dropdown-item" href="{{ route('user.followers') }}">
+                                {{ "フォロワー" }}
+                            </a>
                             <a class="dropdown-item" href="{{ route('user.index') }}">
                                 {{ "ユーザー一覧" }}
                             </a>

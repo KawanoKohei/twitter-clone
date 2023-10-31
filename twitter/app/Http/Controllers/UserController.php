@@ -141,4 +141,28 @@ class UserController extends Controller
             return redirect()->route('user.index')->with('error', 'フォロー解除に失敗しました！');
         }
     }
+
+    /**
+     * フォロー表示
+     *
+     * @return View
+     */
+    public function getAllFollows():View
+    {
+        $users = Auth::user()->getAllFollows();
+
+        return view('user.follow',compact('users'));
+    }
+
+    /**
+     * フォロワー表示
+     *
+     * @return View
+     */
+    public function getAllFollowers():View
+    {
+        $users = Auth::user()->getAllFollowers();
+
+        return view('user.follower',compact('users'));
+    }
 }

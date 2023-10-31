@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Follower;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -139,5 +140,24 @@ class User extends Authenticatable
     {
         $this->follows()->detach($user_id);
     }
-}  
 
+    /**
+     * フォローの取得
+     *
+     * @return Collection
+     */
+    public function getAllFollows():Collection
+    {
+        return $this->follows()->get();
+    }
+
+    /**
+     * フォロワーの取得
+     *
+     * @return Collection
+     */
+    public function getAllFollowers():Collection
+    {
+        return $this->followers()->get();
+    }
+} 
