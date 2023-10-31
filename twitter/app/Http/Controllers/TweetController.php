@@ -139,16 +139,23 @@ class TweetController extends Controller
      */
     public function searchByQuery(QueryRequest $request, Tweet $tweet):View|RedirectResponse
     {
-        $query = $request->input('query');
+        try {
+            $query = $request->input('query');
 
-        if ($query === null) {
-            return redirect()->route('tweet.index')->with('info', '検索ワードを入力してください');
+            if ($query === null) {
+                return redirect()->route('tweet.index')->with('info', '検索ワードを入力してください');
+            }
+
+            $spaceConversion = mb_convert_kana($query, 's');
+            $wordArrayQuery = preg_split('/[\s,]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
+            $tweets = $tweet->searchByQuery($wordArrayQuery);
+
+            return view('tweet.index',compact('tweets'));
+        } catch(\Exception $e) {
+            Log::error($e);
+            
+            return redirect()->route('tweet.index')->with('error', '検索に失敗しました！');
         }
-
-        $spaceConversion = mb_convert_kana($query, 's');
-        $wordArrayQuery = preg_split('/[\s,]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
-        $tweets = $tweet->searchByQuery($wordArrayQuery);
-
-        return view('tweet.index',compact('tweets'));
+        
     }
 }
