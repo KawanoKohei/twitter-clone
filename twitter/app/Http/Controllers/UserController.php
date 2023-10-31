@@ -147,11 +147,11 @@ class UserController extends Controller
      *
      * @return View
      */
-    public function getAllFollowed():View
+    public function getAllFollows():View
     {
-        $users = Auth::user()->getAllFollowed();
+        $users = Auth::user()->getAllFollows();
 
-        return view('user.followed',compact('users'));
+        return view('user.follow',compact('users'));
     }
 
     /**

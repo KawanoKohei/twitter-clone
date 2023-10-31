@@ -146,7 +146,7 @@ class User extends Authenticatable
      *
      * @return Collection
      */
-    public function getAllFollowed():Collection
+    public function getAllFollows():Collection
     {
         return $this->follows()->get();
     }
