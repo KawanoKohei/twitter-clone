@@ -28,12 +28,18 @@
                                     <form method="post" action="{{ route('user.unfavorite', $tweet->id) }}">
                                         @csrf
                                         @method('delete')
-                                        <input type="submit" value="いいね解除">
+                                        <div class="favorite-container">
+                                            <button type="submit" class="btn p-0 border-0" ><i class="fa-solid fa-heart" style="color: #f0056b;"></i></button>
+                                            <span class="like-count">{{ $tweet->favoriteUsers()->count()}}</span>
+                                        </div>
                                     </form>
                                 @else
                                     <form method="post" action="{{ route('user.favorite', $tweet->id) }}">
                                         @csrf
-                                        <input type="submit" value="いいね">
+                                        <div class="favorite-container">
+                                            <button type="submit" class="btn p-0 border-0"><i class="far fa-heart fa-fw"></i></button>
+                                            <span class="like-count">{{ $tweet->favoriteUsers()->count()}}</span>
+                                        </div>
                                     </form>
                                 @endif
                             </ul>

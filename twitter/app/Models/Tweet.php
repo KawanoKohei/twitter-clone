@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
@@ -83,5 +84,10 @@ class Tweet extends Model
     public function favoriteUsers(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'favorites', 'tweet_id', 'user_id');
+    }
+
+    public function getFavoriteCount()
+    {
+        return $this->favoriteUsers()->count();
     }
 }
