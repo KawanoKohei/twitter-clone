@@ -135,17 +135,14 @@ class TweetController extends Controller
      * クエリ検索機能
      *
      * @param Tweet $tweet
+     * @param QueryRequest $request
      * @return View|RedirectResponse
      */
     public function searchByQuery(QueryRequest $request, Tweet $tweet):View|RedirectResponse
     {
         try {
             $query = $request->input('query');
-
-            if ($query === null) {
-                return redirect()->route('tweet.index')->with('info', '検索ワードを入力してください');
-            }
-
+            //複数単語処理
             $spaceConversion = mb_convert_kana($query, 's');
             $wordArrayQuery = preg_split('/[\s,]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
             $tweets = $tweet->searchByQuery($wordArrayQuery);
@@ -156,6 +153,5 @@ class TweetController extends Controller
             
             return redirect()->route('tweet.index')->with('error', '検索に失敗しました！');
         }
-        
     }
 }

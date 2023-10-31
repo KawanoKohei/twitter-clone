@@ -78,7 +78,7 @@ class Tweet extends Model
     /**
      * クエリ検索機能
      *
-     * @param array $wordArraySearchWord
+     * @param array $wordArrayQuery
      * @return LengthAwarePaginator
      */
     public function searchByQuery(array $wordArrayQuery):LengthAwarePaginator

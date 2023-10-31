@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Const\TweetConst;
 use Illuminate\Foundation\Http\FormRequest;
 
 class QueryRequest extends FormRequest
@@ -24,7 +25,7 @@ class QueryRequest extends FormRequest
     public function rules():array
     {
         return [
-            'query' => 'nullable|string|max:200'
+            'query' => 'required|string|max:' . \App\Const\TweetConst::TWEET_MAX_STRING
         ];
     }
 
@@ -36,6 +37,7 @@ class QueryRequest extends FormRequest
     public function messages():array
     {
         return [
+            'query.required' => '検索ワードを入力してください',
             'query.max' => '200文字以内で入力してください',
         ];
     }

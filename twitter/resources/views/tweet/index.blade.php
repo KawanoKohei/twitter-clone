@@ -22,7 +22,7 @@
                         <h5 class="card-title">ツイート一覧</h5>
                         <form method="get" action="{{ route('tweet.search') }}">
                             @csrf
-                            @error('searchWord')
+                            @error('query')
                                 <div class="alert alert-info">
                                     <p>{{ $message }}</p>
                                 </div>
