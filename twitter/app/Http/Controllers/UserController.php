@@ -182,7 +182,7 @@ class UserController extends Controller
                 Auth::user()->favorite($tweetId);
             } 
 
-            return redirect()->route('tweet.index');
+            return back();
         } catch(\Exception $e) {
             Log::error($e);
 
@@ -205,11 +205,11 @@ class UserController extends Controller
                 Auth::user()->unfavorite($tweetId);
             } 
 
-            return redirect()->route('tweet.index');
+            return back();
         } catch(\Exception $e) {
             Log::error($e);
 
-            return redirect()->route('tweet.index')->with('error', 'いいねできませんでした！');
+            return redirect()->route('tweet.index')->with('error', 'いいね解除できませんでした！');
         }
     }
 }
