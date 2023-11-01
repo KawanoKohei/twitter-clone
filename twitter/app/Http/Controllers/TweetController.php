@@ -61,11 +61,11 @@ class TweetController extends Controller
      * @param Tweet $tweet
      * @return View
      */
-    public function detail(Tweet $tweet):View
+    public function detail(Tweet $tweet, Favorite $favorite):View
     {
         $tweet->detail($tweet->id);
 
-        return view('tweet.show', compact('tweet'));
+        return view('tweet.show', compact('tweet','favorite'));
     }
 
     /**
