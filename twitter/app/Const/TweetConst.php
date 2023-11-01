@@ -3,6 +3,6 @@
 
     class TweetConst
     {
-        const TWEET_MAX_STRING = 200;
+        const TWEET_MAX_STRING = 140;
     }
 ?>

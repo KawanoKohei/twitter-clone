@@ -21,14 +21,13 @@
                         @endif
                         <h5 class="card-title">ツイート一覧</h5>
                         <form method="get" action="{{ route('tweet.search') }}">
-                            @csrf
-                            @error('query')
+                            @error('searchWord')
                                 <div class="alert alert-info">
                                     <p>{{ $message }}</p>
                                 </div>
                             @enderror
                             <div class="col-auto">
-                                <input type="text" name="query" class="form-control" placeholder="検索ワードを入力" >
+                                <input type="text" name="searchWord" class="form-control" placeholder="検索ワードを入力" >
                             </div>
                             <div class="col-auto">
                                 <button type="submit" class="btn btn-primary mb-3">検索</button>

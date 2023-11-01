@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateTweetRequest;
-use App\Http\Requests\QueryRequest;
+use App\Http\Requests\SearchWordRequest;
 use App\Http\Requests\UpdateTweetRequest;
 use App\Models\Tweet;
 use Illuminate\Http\RedirectResponse;
@@ -135,17 +135,17 @@ class TweetController extends Controller
      * クエリ検索機能
      *
      * @param Tweet $tweet
-     * @param QueryRequest $request
+     * @param SearchWordRequest $request
      * @return View|RedirectResponse
      */
-    public function searchByQuery(QueryRequest $request, Tweet $tweet):View|RedirectResponse
+    public function searchByQuery(SearchWordRequest $request, Tweet $tweet):View|RedirectResponse
     {
         try {
-            $query = $request->input('query');
+            $searchWord = $request->input('searchWord');
             //複数単語処理
-            $spaceConversion = mb_convert_kana($query, 's');
-            $wordArrayQuery = preg_split('/[\s,]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
-            $tweets = $tweet->searchByQuery($wordArrayQuery);
+            $spaceConversion = mb_convert_kana($searchWord, 's');
+            $wordArraySearchWord = preg_split('/[\s,]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
+            $tweets = $tweet->searchByQuery($wordArraySearchWord);
 
             return view('tweet.index',compact('tweets'));
         } catch(\Exception $e) {

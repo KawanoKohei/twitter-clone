@@ -24,7 +24,7 @@ class CreateTweetRequest extends FormRequest
     public function rules():array
     {
         return [
-            'tweet' => 'required|between:1,200',
+            'tweet' => 'required|between:1,' . \App\Const\TweetConst::TWEET_MAX_STRING
         ];
     }
 
@@ -37,7 +37,7 @@ class CreateTweetRequest extends FormRequest
     {
         return [
             'tweet.required' => 'ツイートを入力してください',
-            'tweet.between' => '200文字以内で入力してください',
+            'tweet.between' => '140文字以内で入力してください',
         ];
     }
 }

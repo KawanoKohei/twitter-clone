@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use App\Const\TweetConst;
 use Illuminate\Foundation\Http\FormRequest;
 
-class QueryRequest extends FormRequest
+class SearchWordRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,7 @@ class QueryRequest extends FormRequest
     public function rules():array
     {
         return [
-            'query' => 'required|string|max:' . \App\Const\TweetConst::TWEET_MAX_STRING
+            'searchWord' => 'required|string|max:' . \App\Const\TweetConst::TWEET_MAX_STRING
         ];
     }
 
@@ -37,8 +37,8 @@ class QueryRequest extends FormRequest
     public function messages():array
     {
         return [
-            'query.required' => '検索ワードを入力してください',
-            'query.max' => '200文字以内で入力してください',
+            'searchWord.required' => '検索ワードを入力してください',
+            'searchWord.max' => '140文字以内で入力してください',
         ];
     }
 }
