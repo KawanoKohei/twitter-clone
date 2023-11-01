@@ -143,6 +143,30 @@ class UserController extends Controller
         }
     }
 
+    /** 
+     * フォロー表示
+     *
+     * @return View
+     */
+    public function getAllFollows():View
+    {
+        $users = Auth::user()->getAllFollows();
+
+        return view('user.follow',compact('users'));
+    }
+
+    /**
+     * フォロワー表示
+     *
+     * @return View
+     */
+    public function getAllFollowers():View
+    {
+        $users = Auth::user()->getAllFollowers();
+
+        return view('user.follower',compact('users'));
+    }
+
     /**
      * いいね機能
      *

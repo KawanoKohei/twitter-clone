@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateTweetRequest;
+use App\Http\Requests\SearchWordRequest;
 use App\Http\Requests\UpdateTweetRequest;
 use App\Models\Favorite;
 use App\Models\Tweet;
@@ -128,6 +129,30 @@ class TweetController extends Controller
             Log::error($e);
             
             return redirect()->route('tweet.index')->with('error', '削除に失敗しました！');
+        }
+    }
+
+    /**
+     * クエリ検索機能
+     *
+     * @param Tweet $tweet
+     * @param SearchWordRequest $request
+     * @return View|RedirectResponse
+     */
+    public function searchByQuery(SearchWordRequest $request, Tweet $tweet):View|RedirectResponse
+    {
+        try {
+            $searchWord = $request->input('searchWord');
+            //複数単語処理
+            $spaceConversion = mb_convert_kana($searchWord, 's');
+            $wordArraySearchWord = preg_split('/[\s,]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
+            $tweets = $tweet->searchByQuery($wordArraySearchWord);
+
+            return view('tweet.index',compact('tweets'));
+        } catch(\Exception $e) {
+            Log::error($e);
+            
+            return redirect()->route('tweet.index')->with('error', '検索に失敗しました！');
         }
     }
 }

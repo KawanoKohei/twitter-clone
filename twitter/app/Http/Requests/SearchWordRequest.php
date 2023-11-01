@@ -2,9 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Const\TweetConst;
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateTweetRequest extends FormRequest
+class SearchWordRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,18 +14,18 @@ class CreateTweetRequest extends FormRequest
      */
     public function authorize():bool
     {
-        return $this->path() == 'tweet/create';
+        return true;
     }
 
     /**
-     * ツイートにおけるバリデーション
+     * Get the validation rules that apply to the request.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function rules():array
     {
         return [
-            'tweet' => 'required|between:1,' . \App\Const\TweetConst::TWEET_MAX_STRING
+            'searchWord' => 'required|string|max:' . \App\Const\TweetConst::TWEET_MAX_STRING
         ];
     }
 
@@ -36,8 +37,8 @@ class CreateTweetRequest extends FormRequest
     public function messages():array
     {
         return [
-            'tweet.required' => 'ツイートを入力してください',
-            'tweet.between' => '140文字以内で入力してください',
+            'searchWord.required' => '検索ワードを入力してください',
+            'searchWord.max' => '140文字以内で入力してください',
         ];
     }
 }

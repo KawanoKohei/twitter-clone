@@ -85,4 +85,23 @@ class Tweet extends Model
     {
         return $this->belongsToMany(User::class, 'favorites', 'tweet_id', 'user_id');
     }
+    
+    /** 
+     * クエリ検索機能
+     *
+     * @param array $wordArraySearchWord
+     * @return LengthAwarePaginator
+     */
+    public function searchByQuery(array $wordArraySearchWord):LengthAwarePaginator
+    {
+        $searchWord = Tweet::query();
+
+        foreach ($wordArraySearchWord as $word) {
+            $searchWord->orWhere('tweet', 'like', '%'.$word.'%');
+        }
+
+        return $searchWord->with('user')
+            ->orderBy('updated_at', 'desc')
+            ->paginate(5);
+    }
 }

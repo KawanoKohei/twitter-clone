@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Follower;
 use App\Models\Favorite;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -142,6 +143,26 @@ class User extends Authenticatable
     }
 
     /**
+     * フォローの取得
+     *
+     * @return Collection
+     */
+    public function getAllFollows():Collection
+    {
+        return $this->follows()->get();
+    }
+
+    /**
+     * フォロワーの取得
+     *
+     * @return Collection
+     */
+    public function getAllFollowers():Collection
+    {
+        return $this->followers()->get();
+    }
+
+    /**
      * ツイートモデルとの多対多リレーション
      *
      * @return BelongsToMany
@@ -174,4 +195,3 @@ class User extends Authenticatable
         $this->favoriteTweets()->detach($tweet_id);
     }
 }  
-
