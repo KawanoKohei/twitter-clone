@@ -186,7 +186,7 @@ class UserController extends Controller
         } catch(\Exception $e) {
             Log::error($e);
 
-            return redirect()->route('tweet.index')->with('error', 'いいねできませんでした！');
+            return back()->with('error', 'いいねできませんでした！');
         }
     }
 
@@ -209,7 +209,7 @@ class UserController extends Controller
         } catch(\Exception $e) {
             Log::error($e);
 
-            return redirect()->route('tweet.index')->with('error', 'いいね解除できませんでした！');
+            return back()->with('error', 'いいね解除できませんでした！');
         }
     }
 }
