@@ -9,7 +9,7 @@ class Favorite extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'tweet_id'];
+    protected $guarded = ['user_id', 'tweet_id'];
 
     /**
      * 既存いいねの確認
