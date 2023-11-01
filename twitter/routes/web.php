@@ -69,5 +69,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::delete('delete/{tweet}', [TweetController::class, 'delete'])->name('delete');
         //ツイートのクエリ検索
         Route::get('search', [TweetController::class, 'searchByQuery'])->name('search');
+        //いいねツイート一覧
+        Route::get('favorite', [TweetController::class, 'getAllFavoriteTweet'])->name('favorite');
     });
 });

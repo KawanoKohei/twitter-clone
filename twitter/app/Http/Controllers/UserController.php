@@ -182,7 +182,7 @@ class UserController extends Controller
                 Auth::user()->favorite($tweetId);
             } 
 
-            return redirect()->route('tweet.index');
+            return back();
         } catch(\Exception $e) {
             Log::error($e);
 
@@ -205,7 +205,8 @@ class UserController extends Controller
                 Auth::user()->unfavorite($tweetId);
             } 
 
-            return redirect()->route('tweet.index');
+            // return redirect()->route('tweet.index');
+            return back();
         } catch(\Exception $e) {
             Log::error($e);
 

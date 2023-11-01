@@ -155,4 +155,20 @@ class TweetController extends Controller
             return redirect()->route('tweet.index')->with('error', '検索に失敗しました！');
         }
     }
+
+    /**
+     * いいねしたツイート取得
+     *
+     * @param Favorite $favorite
+     * @param Tweet $tweet
+     * @return View
+     */
+    public function getAllFavoriteTweet(Favorite $favorite, Tweet $tweet):View
+    {
+        $tweetIds = $favorite->getAllByUserId();
+        $tweetIdsArray = $tweetIds->toArray();
+        $tweets = $tweet->getAllByTweetIds($tweetIdsArray);
+
+        return view('tweet.favorite',compact('tweets', 'favorite'));
+    }
 }

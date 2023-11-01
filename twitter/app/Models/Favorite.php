@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
+// use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 
 class Favorite extends Model
 {
@@ -21,5 +24,17 @@ class Favorite extends Model
     public function isFavorite(int $userId, int $favoriteTweetId ): bool
     {
         return Favorite::where('user_id', $userId)->where('tweet_id', $favoriteTweetId)->exists();
+    }
+
+    /**
+     * いいねツイートID取得
+     *
+     * @return Collection
+     */
+    public function getAllByUserId(): Collection
+    {
+        return Favorite::query()
+            ->where('user_id', Auth::id())
+            ->pluck('tweet_id');
     }
 }

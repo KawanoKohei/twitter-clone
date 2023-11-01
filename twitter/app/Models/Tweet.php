@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -85,7 +86,7 @@ class Tweet extends Model
     {
         return $this->belongsToMany(User::class, 'favorites', 'tweet_id', 'user_id');
     }
-    
+
     /** 
      * クエリ検索機能
      *
@@ -102,6 +103,20 @@ class Tweet extends Model
 
         return $searchWord->with('user')
             ->orderBy('updated_at', 'desc')
+            ->paginate(5);
+    }
+
+    /**
+     * いいねツイート取得
+     *
+     * @param array $tweetIds
+     * @return LengthAwarePaginator
+     */
+    public function getAllByTweetIds(array $tweetIds):LengthAwarePaginator
+    {
+        return Tweet::query()
+            ->whereIn('id', $tweetIds)
+            ->with('user')
             ->paginate(5);
     }
 }
