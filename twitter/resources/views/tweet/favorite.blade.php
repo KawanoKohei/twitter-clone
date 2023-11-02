@@ -7,6 +7,11 @@
                 <div class="card text-center">
                     <div class="card-body">
                         <h5 class="card-title">いいねツイート一覧</h5>
+                        @if (session('error'))
+                            <div class="alert alert-danger">
+                                {{ session('error') }}
+                            </div>
+                        @endif
                         @foreach ($tweets as $tweet)
                             <ul class="list-group list-group-flush">
                                 <a href="{{ route('tweet.detail', $tweet) }}" class="text-decoration-none">
