@@ -47,10 +47,9 @@ class TweetController extends Controller
      *
      * @return View
      */
-    public function index(Favorite $favorite):View
+    public function index(Favorite $favorite, Tweet $tweet):View
     {
-        $tweets = new Tweet();
-        $tweets = $tweets->index();
+        $tweets = $tweet->index();
         
         return view('tweet.index',compact('tweets', 'favorite'));
     }
@@ -64,8 +63,10 @@ class TweetController extends Controller
     public function detail(Tweet $tweet, Favorite $favorite):View
     {
         $tweet->detail($tweet->id);
+        $replies = $tweet->replyIndex();
+        // dd($replies);
 
-        return view('tweet.show', compact('tweet','favorite'));
+        return view('tweet.show', compact('tweet','favorite', 'replies'));
     }
 
     /**

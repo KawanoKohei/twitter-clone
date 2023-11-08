@@ -42,9 +42,15 @@
                                     </li>
                                 </a>
                                 <!-- Button trigger modal -->
-                                <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#aaa" style="background: transparent; border: none; margin-left: 8px">
+                                {{-- <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#aaa" style="background: transparent; border: none; margin-left: 8px">
                                     <i class="fa-solid fa-reply" style="color: #080410;"></i>
-                                </button>
+                                </button> --}}
+                                <div class="reply-container">
+                                    <button onclick="location.href='{{ route('tweet.detail', $tweet) }}'" class="btn p-0 border-0">
+                                        <i class="fa-solid fa-reply" style="color: #080410;"></i>
+                                    </button>
+                                    {{-- <span class="reply-count"> {{ $tweet->favoriteUsers()->count()}}</span> --}}
+                                </div>
                                 @if($favorite->isFavorite(Auth::id(), $tweet->id))
                                     <form method="post" action="{{ route('user.unfavorite', $tweet->id) }}">
                                         @csrf
@@ -65,7 +71,7 @@
                                 @endif
                                 
                                 <!-- Modal -->
-                                <form method="post" action="{{ route('reply.store',$tweet) }}">
+                                {{-- <form method="post" action="{{ route('reply.store',$tweet) }}">
                                     @csrf
                                     <div class="modal fade" id="aaa" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
@@ -86,7 +92,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </form>
+                                </form> --}}
                             </ul>
                         @endforeach
                         {{ $tweets->links() }}

@@ -18,13 +18,12 @@ class ReplyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request  $request, Tweet $tweet, Reply $reply)
+    public function store(Request $request, Tweet $tweet, Reply $reply)
     {
         try {
             $reply->user_id = Auth::id();
             $reply->tweet_id = $tweet->id;
             $reply->reply = $request->replyMessage;
-            dd($reply);
     
             $reply->store();
     
@@ -42,9 +41,9 @@ class ReplyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show()
     {
-        //
+
     }
 
     /**

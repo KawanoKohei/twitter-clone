@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Reply;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -118,5 +119,18 @@ class Tweet extends Model
             ->whereIn('id', $tweetIds)
             ->with('user')
             ->paginate(5);
+    }
+
+    public function replies()
+    {
+        return $this->hasMany(Reply::class);
+    }
+    
+    public function replyIndex()
+    {
+        return $this->replies()
+            ->with('user')
+            ->orderBy('created_at', 'desc')
+            ->get();
     }
 }
