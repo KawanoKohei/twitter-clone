@@ -41,6 +41,10 @@
                                         {{ $tweet->tweet }}
                                     </li>
                                 </a>
+                                <!-- Button trigger modal -->
+                                <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#aaa" style="background: transparent; border: none; margin-left: 8px">
+                                    <i class="fa-solid fa-reply" style="color: #080410;"></i>
+                                </button>
                                 @if($favorite->isFavorite(Auth::id(), $tweet->id))
                                     <form method="post" action="{{ route('user.unfavorite', $tweet->id) }}">
                                         @csrf
@@ -59,6 +63,30 @@
                                         </div>
                                     </form>
                                 @endif
+                                
+                                <!-- Modal -->
+                                <form method="post" action="{{ route('reply.store',$tweet) }}">
+                                    @csrf
+                                    <div class="modal fade" id="aaa" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <div class="card w-100">
+                                                        <div class="card" >
+                                                            <div class="card-body">
+                                                                <div class="modal-body">
+                                                                    <textarea type="text" name="replyMessage" class="form-control" placeholder="なんて返す？"></textarea>
+                                                                </div>
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                                <button type="submit" class="btn btn-primary">リプライ</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
                             </ul>
                         @endforeach
                         {{ $tweets->links() }}

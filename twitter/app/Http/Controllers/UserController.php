@@ -205,7 +205,6 @@ class UserController extends Controller
                 Auth::user()->unfavorite($tweetId);
             } 
 
-            // return redirect()->route('tweet.index');
             return back();
         } catch(\Exception $e) {
             Log::error($e);

@@ -139,7 +139,7 @@ class TweetController extends Controller
      * @param SearchWordRequest $request
      * @return View|RedirectResponse
      */
-    public function searchByQuery(SearchWordRequest $request, Tweet $tweet):View|RedirectResponse
+    public function searchByQuery(SearchWordRequest $request, Tweet $tweet, Favorite $favorite):View|RedirectResponse
     {
         try {
             $searchWord = $request->input('searchWord');
@@ -148,7 +148,7 @@ class TweetController extends Controller
             $wordArraySearchWord = preg_split('/[\s,]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
             $tweets = $tweet->searchByQuery($wordArraySearchWord);
 
-            return view('tweet.index',compact('tweets'));
+            return view('tweet.index',compact('tweets','favorite'));
         } catch(\Exception $e) {
             Log::error($e);
             

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ReplyController;
 use App\Http\Controllers\TweetController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -71,5 +72,10 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('search', [TweetController::class, 'searchByQuery'])->name('search');
         //いいねツイート一覧
         Route::get('favorite', [TweetController::class, 'getAllFavoriteTweet'])->name('favorite');
+    });
+    Route::group(['prefix' => 'reply', 'as' => 'reply.'], function()
+    {
+        //ツイート投稿作成
+        Route::post('store/{tweet}', [ReplyController::class, 'store'])->name('store');
     });
 });
