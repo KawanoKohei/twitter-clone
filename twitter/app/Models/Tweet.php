@@ -75,16 +75,6 @@ class Tweet extends Model
     {
         $this->delete();
     }
-
-    /**
-     * ユーザーモデルとの多対多リレーション
-     *
-     * @return BelongsToMany
-     */
-    public function favoriteUsers(): BelongsToMany
-    {
-        return $this->belongsToMany(User::class, 'favorites', 'tweet_id', 'user_id');
-    }
     
     /** 
      * クエリ検索機能
@@ -103,5 +93,36 @@ class Tweet extends Model
         return $searchWord->with('user')
             ->orderBy('updated_at', 'desc')
             ->paginate(5);
+    }
+
+    /**
+     * いいねテーブルを中間テーブルとするユーザーモデルとの多対多リレーション
+     *
+     * @return BelongsToMany
+     */
+    public function favoriteUsers(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'favorites', 'tweet_id', 'user_id')
+            ->withPivot('created_at','updated_at');
+    }
+
+    /**
+     * いいね機能
+     *
+     * @return void
+     */
+    public function favorite():void
+    {
+        $this->favoriteUsers()->attach(Auth::id());
+    }
+
+    /**
+     * いいね解除機能
+     *
+     * @return void
+     */
+    public function unfavorite():void
+    {
+        $this->favoriteUsers()->detach(Auth::id());
     }
 }

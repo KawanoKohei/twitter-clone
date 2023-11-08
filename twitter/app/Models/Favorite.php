@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Favorite extends Model
 {
@@ -18,8 +19,8 @@ class Favorite extends Model
      * @param integer $favoriteTweetId
      * @return boolean
      */
-    public function isFavorite(int $userId, int $favoriteTweetId ): bool
+    public function isFavorite(int $favoriteTweetId ): bool
     {
-        return Favorite::where('user_id', $userId)->where('tweet_id', $favoriteTweetId)->exists();
+        return Favorite::where('user_id', Auth::id())->where('tweet_id', $favoriteTweetId)->exists();
     }
 }
