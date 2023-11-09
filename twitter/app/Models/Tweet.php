@@ -65,6 +65,9 @@ class Tweet extends Model
     public function index():LengthAwarePaginator
     {
         return $this->with('user')
+            ->withExists([ 'favorites' => function ($isFavorite) {
+                $isFavorite->where('user_id', Auth::id());
+            }]) 
             ->withCount('favorites')
             ->orderBy('updated_at', 'desc')
             ->paginate(6);
@@ -79,6 +82,9 @@ class Tweet extends Model
     public function detail(int $tweetId):Tweet
     {
         return $this->with('user')
+            ->withExists([ 'favorites' => function ($isFavorite) {
+                $isFavorite->where('user_id', Auth::id());
+            }]) 
             ->withCount('favorites')
             ->find($tweetId);
     }

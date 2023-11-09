@@ -45,12 +45,12 @@ class TweetController extends Controller
     /**
      * ツイート一覧表示
      *
+     * @param Tweet $tweet
      * @return View
      */
-    public function index(Tweet $tweet, Favorite $favorite):View
+    public function index(Tweet $tweet):View
     {
         $tweets = $tweet->index();
-        foreach ($tweets as $tweet) $tweet->isFavorite = $favorite->isFavorite($tweet->id);
         
         return view('tweet.index',compact('tweets'));
     }
@@ -61,10 +61,9 @@ class TweetController extends Controller
      * @param Tweet $tweet
      * @return View
      */
-    public function detail(Tweet $tweet, Favorite $favorite):View
+    public function detail(Tweet $tweet):View
     {
         $tweet = $tweet->detail($tweet->id);
-        $tweet->isFavorite = $favorite->isFavorite($tweet->id);
 
         return view('tweet.show', compact('tweet'));
     }

@@ -41,7 +41,7 @@
                                         {{ $tweet->tweet }}
                                     </li>
                                 </a>
-                                @if($tweet->isFavorite)
+                                @if($tweet->favorites_exists)
                                     <form method="post" action="{{ route('tweet.unfavorite', $tweet) }}">
                                         @csrf
                                         @method('delete')

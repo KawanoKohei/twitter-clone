@@ -21,7 +21,7 @@
                         @endif
                         <p class="card-text">{{ $tweet->user->name }}</p>
                         <p class="card-text">{{ $tweet->tweet }}</p>
-                        @if($tweet->isFavorite)
+                        @if($tweet->favorites_exists)
                                     <form method="post" action="{{ route('tweet.unfavorite', $tweet) }}">
                                         @csrf
                                         @method('delete')
