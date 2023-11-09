@@ -45,13 +45,14 @@ class TweetController extends Controller
     /**
      * ツイート一覧表示
      *
+     * @param Tweet $tweet
      * @return View
      */
     public function index(Favorite $favorite, Tweet $tweet):View
     {
         $tweets = $tweet->index();
         
-        return view('tweet.index',compact('tweets', 'favorite'));
+        return view('tweet.index',compact('tweets','favorite'));
     }
 
     /**
@@ -60,13 +61,12 @@ class TweetController extends Controller
      * @param Tweet $tweet
      * @return View
      */
-    public function detail(Tweet $tweet, Favorite $favorite):View
+    public function detail(Favorite $favorite, Tweet $tweet):View
     {
-        $tweet->detail($tweet->id);
+        $tweet = $tweet->detail($tweet->id);
         $replies = $tweet->replyIndex();
-        // dd($replies);
 
-        return view('tweet.show', compact('tweet','favorite', 'replies'));
+        return view('tweet.show', compact('tweet', 'favorite', 'replies'));
     }
 
     /**
@@ -140,7 +140,7 @@ class TweetController extends Controller
      * @param SearchWordRequest $request
      * @return View|RedirectResponse
      */
-    public function searchByQuery(SearchWordRequest $request, Tweet $tweet, Favorite $favorite):View|RedirectResponse
+    public function searchByQuery(SearchWordRequest $request, Tweet $tweet):View|RedirectResponse
     {
         try {
             $searchWord = $request->input('searchWord');
@@ -149,7 +149,7 @@ class TweetController extends Controller
             $wordArraySearchWord = preg_split('/[\s,]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
             $tweets = $tweet->searchByQuery($wordArraySearchWord);
 
-            return view('tweet.index',compact('tweets','favorite'));
+            return view('tweet.index',compact('tweets'));
         } catch(\Exception $e) {
             Log::error($e);
             
@@ -158,18 +158,42 @@ class TweetController extends Controller
     }
 
     /**
-     * いいねしたツイート取得
+     * いいね機能
      *
      * @param Favorite $favorite
      * @param Tweet $tweet
-     * @return View
+     * @return RedirectResponse
      */
-    public function getAllFavoriteTweet(Favorite $favorite, Tweet $tweet):View
+    public function favorite(Favorite $favorite, Tweet $tweet):RedirectResponse
     {
-        $tweetIds = $favorite->getAllByUserId();
-        $tweetIdsArray = $tweetIds->toArray();
-        $tweets = $tweet->getAllByTweetIds($tweetIdsArray);
+        try {
+            if (!$favorite->isFavorite($tweet->id)) $tweet->favorite();
 
-        return view('tweet.favorite',compact('tweets', 'favorite'));
+            return back();
+        } catch(\Exception $e) {
+            Log::error($e);
+
+            return back()->with('error', 'いいねできませんでした！');
+        }
+    }
+
+    /**
+     * いいね解除機能
+     *
+     * @param Favorite $favorite
+     * @param Tweet $tweet
+     * @return RedirectResponse
+     */
+    public function unfavorite(Favorite $favorite, Tweet $tweet):RedirectResponse
+    {
+        try {
+            if ($favorite->isFavorite($tweet->id)) $tweet->unfavorite();
+
+            return back();
+        } catch(\Exception $e) {
+            Log::error($e);
+
+            return back()->with('error', 'いいね解除できませんでした！');
+        }
     }
 }

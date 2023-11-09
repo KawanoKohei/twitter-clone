@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
@@ -28,6 +29,16 @@ class Tweet extends Model
     }
 
     /**
+     * リプライテーブルとのリレーション
+     *
+     * @return HasMany
+     */
+    public function replies(): HasMany
+    {
+        return $this->hasMany(Reply::class);
+    }
+
+    /**
      * ツイート投稿作成機能
      *
      * @return void
@@ -44,7 +55,10 @@ class Tweet extends Model
      */
     public function index():LengthAwarePaginator
     {
-        return $this->with('user')->orderBy('updated_at', 'desc')->paginate(6);
+        return $this->with('user')
+            ->withCount('replies')
+            ->orderBy('updated_at', 'desc')
+            ->paginate(6);
     }
     
     /**
@@ -55,7 +69,9 @@ class Tweet extends Model
      */
     public function detail(int $tweetId):Tweet
     {
-        return $this->with('user')->find($tweetId);
+        return $this->with('user')
+            ->withCount('replies')
+            ->find($tweetId);
     }
 
     /**
@@ -121,11 +137,6 @@ class Tweet extends Model
             ->paginate(5);
     }
 
-    public function replies()
-    {
-        return $this->hasMany(Reply::class);
-    }
-    
     public function replyIndex()
     {
         return $this->replies()

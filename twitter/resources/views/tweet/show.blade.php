@@ -36,6 +36,13 @@
                         @endif
                         <p class="card-text">{{ $tweet->user->name }}</p>
                         <p class="card-text">{{ $tweet->tweet }}</p>
+                        {{-- リプライアイコン --}}
+                        <div class="reply-container">
+                            <button onclick="location.href='{{ route('tweet.detail', $tweet) }}'" class="btn p-0 border-0">
+                                <i class="fa-solid fa-reply" style="color: #080410;"></i>
+                            </button>
+                            <span class="reply-count"> {{ $tweet->replies_count}}</span>
+                        </div>
                         {{-- いいね機能 --}}
                         @if($favorite->isFavorite(Auth::id(), $tweet->id))
                             <form method="post" action="{{ route('user.unfavorite', $tweet->id) }}">
