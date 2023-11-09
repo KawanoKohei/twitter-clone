@@ -47,12 +47,12 @@ class TweetController extends Controller
      *
      * @return View
      */
-    public function index(Favorite $favorite):View
+    public function index(Tweet $tweet, Favorite $favorite):View
     {
-        $tweets = new Tweet();
-        $tweets = $tweets->index();
+        $tweets = $tweet->index();
+        foreach ($tweets as $tweet) $tweet->isFavorite = $favorite->isFavorite($tweet->id);
         
-        return view('tweet.index',compact('tweets', 'favorite'));
+        return view('tweet.index',compact('tweets'));
     }
 
     /**
@@ -63,9 +63,10 @@ class TweetController extends Controller
      */
     public function detail(Tweet $tweet, Favorite $favorite):View
     {
-        $tweet->detail($tweet->id);
+        $tweet = $tweet->detail($tweet->id);
+        $tweet->isFavorite = $favorite->isFavorite($tweet->id);
 
-        return view('tweet.show', compact('tweet','favorite'));
+        return view('tweet.show', compact('tweet'));
     }
 
     /**
@@ -166,10 +167,7 @@ class TweetController extends Controller
     public function favorite(Favorite $favorite, Tweet $tweet):RedirectResponse
     {
         try {
-            if (!$favorite->isFavorite($tweet->id))
-            {
-                $tweet->favorite();
-            } 
+            if (!$favorite->isFavorite($tweet->id)) $tweet->favorite();
 
             return back();
         } catch(\Exception $e) {
@@ -189,10 +187,7 @@ class TweetController extends Controller
     public function unfavorite(Favorite $favorite, Tweet $tweet):RedirectResponse
     {
         try {
-            if ($favorite->isFavorite($tweet->id))
-            {
-                $tweet->unfavorite();
-            } 
+            if ($favorite->isFavorite($tweet->id)) $tweet->unfavorite();
 
             return back();
         } catch(\Exception $e) {

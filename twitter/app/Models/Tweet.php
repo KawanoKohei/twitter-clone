@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
@@ -16,13 +17,34 @@ class Tweet extends Model
     use SoftDeletes;
 
     /**
-     * Get the user that owns the Tweet
+     * ユーザーテーブルとのリレーション
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * いいねテーブルを中間テーブルとするユーザーモデルとの多対多リレーション
+     *
+     * @return BelongsToMany
+     */
+    public function favoriteUsers(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'favorites', 'tweet_id', 'user_id')
+            ->withPivot('created_at','updated_at');
+    }
+
+    /**
+     * いいねテーブルとのリレーション
+     *
+     * @return HasMany
+     */
+    public function favorites(): HasMany
+    {
+        return $this->hasMany(Favorite::class);
     }
 
     /**
@@ -42,7 +64,10 @@ class Tweet extends Model
      */
     public function index():LengthAwarePaginator
     {
-        return $this->with('user')->orderBy('updated_at', 'desc')->paginate(6);
+        return $this->with('user')
+            ->withCount('favorites')
+            ->orderBy('updated_at', 'desc')
+            ->paginate(6);
     }
     
     /**
@@ -53,7 +78,9 @@ class Tweet extends Model
      */
     public function detail(int $tweetId):Tweet
     {
-        return $this->with('user')->find($tweetId);
+        return $this->with('user')
+            ->withCount('favorites')
+            ->find($tweetId);
     }
 
     /**
@@ -93,17 +120,6 @@ class Tweet extends Model
         return $searchWord->with('user')
             ->orderBy('updated_at', 'desc')
             ->paginate(5);
-    }
-
-    /**
-     * いいねテーブルを中間テーブルとするユーザーモデルとの多対多リレーション
-     *
-     * @return BelongsToMany
-     */
-    public function favoriteUsers(): BelongsToMany
-    {
-        return $this->belongsToMany(User::class, 'favorites', 'tweet_id', 'user_id')
-            ->withPivot('created_at','updated_at');
     }
 
     /**

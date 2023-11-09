@@ -21,13 +21,13 @@
                         @endif
                         <p class="card-text">{{ $tweet->user->name }}</p>
                         <p class="card-text">{{ $tweet->tweet }}</p>
-                        @if($favorite->isFavorite($tweet->id))
+                        @if($tweet->isFavorite)
                                     <form method="post" action="{{ route('tweet.unfavorite', $tweet) }}">
                                         @csrf
                                         @method('delete')
                                         <div class="favorite-container">
                                             <button type="submit" class="btn p-0 border-0" ><i class="fa-solid fa-heart" style="color: #f0056b;"></i></button>
-                                            <span class="like-count"> {{ $tweet->favoriteUsers()->count()}}</span>
+                                            <span class="like-count"> {{ $tweet->favorites_count }}</span>
                                         </div>
                                     </form>
                                 @else
@@ -35,7 +35,7 @@
                                         @csrf
                                         <div class="favorite-container">
                                             <button type="submit" class="btn p-0 border-0"><i class="far fa-heart fa-fw"></i></button>
-                                            <span class="like-count"> {{ $tweet->favoriteUsers()->count()}}</span>
+                                            <span class="like-count"> {{ $tweet->favorites_count }}</span>
                                         </div>
                                     </form>
                                 @endif
