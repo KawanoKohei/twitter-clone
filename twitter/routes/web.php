@@ -46,10 +46,6 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('follows', [UserController::class, 'getAllFollows'])->name('follows');
         //フォロワー表示
         Route::get('followers', [UserController::class, 'getAllFollowers'])->name('followers');
-        //いいね
-        Route::post('favorite/{id}', [UserController::class, 'favorite'])->name('favorite');
-        //いいね解除
-        Route::delete('unfavorite/{id}', [UserController::class, 'unfavorite'])->name('unfavorite');
     });
     //ツイート機能
     Route::group(['prefix' => 'tweet', 'as' => 'tweet.'], function()
@@ -70,8 +66,12 @@ Route::group(['middleware' => 'auth'], function () {
         Route::delete('delete/{tweet}', [TweetController::class, 'delete'])->name('delete');
         //ツイートのクエリ検索
         Route::get('search', [TweetController::class, 'searchByQuery'])->name('search');
+        //いいね
+        Route::post('favorite/{tweet}', [TweetController::class, 'favorite'])->name('favorite');
+        //いいね解除
+        Route::delete('unfavorite/{tweet}', [TweetController::class, 'unfavorite'])->name('unfavorite');
         //いいねツイート一覧
-        Route::get('favorite', [TweetController::class, 'getAllFavoriteTweet'])->name('favorite');
+        //Route::get('favorite', [TweetController::class, 'getAllFavoriteTweet'])->name('favorite');
     });
     Route::group(['prefix' => 'reply', 'as' => 'reply.'], function()
     {

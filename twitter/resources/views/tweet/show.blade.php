@@ -44,21 +44,21 @@
                             <span class="reply-count"> {{ $tweet->replies_count}}</span>
                         </div>
                         {{-- いいね機能 --}}
-                        @if($favorite->isFavorite(Auth::id(), $tweet->id))
-                            <form method="post" action="{{ route('user.unfavorite', $tweet->id) }}">
+                        @if($tweet->favorites_exists)
+                            <form method="post" action="{{ route('user.unfavorite', $tweet) }}">
                                 @csrf
                                 @method('delete')
                                 <div class="favorite-container">
                                     <button type="submit" class="btn p-0 border-0" ><i class="fa-solid fa-heart" style="color: #f0056b;"></i></button>
-                                    <span class="like-count"> {{ $tweet->favoriteUsers()->count()}}</span>
+                                    <span class="like-count"> {{ $tweet->favorites_count }}</span>
                                 </div>
                             </form>
                         @else
-                            <form method="post" action="{{ route('user.favorite', $tweet->id) }}">
+                            <form method="post" action="{{ route('tweet.favorite', $tweet) }}">
                                 @csrf
                                 <div class="favorite-container">
                                     <button type="submit" class="btn p-0 border-0"><i class="far fa-heart fa-fw"></i></button>
-                                    <span class="like-count"> {{ $tweet->favoriteUsers()->count()}}</span>
+                                    <span class="like-count"> {{ $tweet->favorites_count }}</span>
                                 </div>
                             </form>
                         @endif

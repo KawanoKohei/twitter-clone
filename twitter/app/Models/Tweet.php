@@ -19,7 +19,7 @@ class Tweet extends Model
     use SoftDeletes;
 
     /**
-     * Get the user that owns the Tweet
+     * ユーザーテーブルとのリレーション
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -36,6 +36,27 @@ class Tweet extends Model
     public function replies(): HasMany
     {
         return $this->hasMany(Reply::class);
+    }
+    
+    /** 
+     * いいねテーブルを中間テーブルとするユーザーモデルとの多対多リレーション
+     *
+     * @return BelongsToMany
+     */
+    public function favoriteUsers(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'favorites', 'tweet_id', 'user_id')
+            ->withPivot('created_at','updated_at');
+    }
+
+    /**
+     * いいねテーブルとのリレーション
+     *
+     * @return HasMany
+     */
+    public function favorites(): HasMany
+    {
+        return $this->hasMany(Favorite::class);
     }
 
     /**
@@ -56,6 +77,10 @@ class Tweet extends Model
     public function index():LengthAwarePaginator
     {
         return $this->with('user')
+            ->withExists([ 'favorites' => function ($isFavorite) {
+                $isFavorite->where('user_id', Auth::id());
+            }]) 
+            ->withCount('favorites')
             ->withCount('replies')
             ->orderBy('updated_at', 'desc')
             ->paginate(6);
@@ -70,6 +95,10 @@ class Tweet extends Model
     public function detail(int $tweetId):Tweet
     {
         return $this->with('user')
+            ->withExists([ 'favorites' => function ($isFavorite) {
+                $isFavorite->where('user_id', Auth::id());
+            }]) 
+            ->withCount('favorites')
             ->withCount('replies')
             ->find($tweetId);
     }
@@ -93,17 +122,7 @@ class Tweet extends Model
     {
         $this->delete();
     }
-
-    /**
-     * ユーザーモデルとの多対多リレーション
-     *
-     * @return BelongsToMany
-     */
-    public function favoriteUsers(): BelongsToMany
-    {
-        return $this->belongsToMany(User::class, 'favorites', 'tweet_id', 'user_id');
-    }
-
+    
     /** 
      * クエリ検索機能
      *
@@ -122,6 +141,26 @@ class Tweet extends Model
             ->orderBy('updated_at', 'desc')
             ->paginate(5);
     }
+    
+    /** 
+     * いいね機能
+     *
+     * @return void
+     */
+    public function favorite():void
+    {
+        $this->favoriteUsers()->attach(Auth::id());
+    }
+
+    /**
+     * いいね解除機能
+     *
+     * @return void
+     */
+    public function unfavorite():void
+    {
+        $this->favoriteUsers()->detach(Auth::id());
+    }
 
     /**
      * いいねツイート取得
@@ -137,7 +176,12 @@ class Tweet extends Model
             ->paginate(5);
     }
 
-    public function replyIndex()
+    /**
+     * リプライ一覧機能
+     *
+     * @return Collection
+     */
+    public function replyIndex():Collection
     {
         return $this->replies()
             ->with('user')

@@ -21,11 +21,11 @@ class Favorite extends Model
      * @param integer $favoriteTweetId
      * @return boolean
      */
-    public function isFavorite(int $userId, int $favoriteTweetId ): bool
+    public function isFavorite(int $favoriteTweetId ): bool
     {
-        return Favorite::where('user_id', $userId)->where('tweet_id', $favoriteTweetId)->exists();
+        return Favorite::where('user_id', Auth::id())->where('tweet_id', $favoriteTweetId)->exists();
     }
-
+    
     /**
      * いいねツイートID取得
      *
