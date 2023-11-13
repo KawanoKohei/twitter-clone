@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserEditRequest;
+use App\Models\Favorite;
 use App\Models\Follower;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
@@ -142,7 +143,7 @@ class UserController extends Controller
         }
     }
 
-    /**
+    /** 
      * フォロー表示
      *
      * @return View

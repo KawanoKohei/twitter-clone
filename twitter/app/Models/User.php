@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Follower;
+use App\Models\Favorite;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -21,8 +22,7 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
     use SoftDeletes;
 
-    /**
-     * The attributes that are mass assignable.
+    /** * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
@@ -160,4 +160,14 @@ class User extends Authenticatable
     {
         return $this->followers()->get();
     }
-} 
+
+    /**
+     * いいねテーブルを中間テーブルとするツイートモデルとの多対多リレーション
+     *
+     * @return BelongsToMany
+     */
+    public function favoriteTweets(): BelongsToMany
+    {
+        return $this->belongsToMany(Tweet::class, 'favorites', 'user_id', 'tweet_id');
+    }
+}  

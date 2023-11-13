@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateTweetRequest;
 use App\Http\Requests\SearchWordRequest;
 use App\Http\Requests\UpdateTweetRequest;
+use App\Models\Favorite;
 use App\Models\Tweet;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -44,12 +45,12 @@ class TweetController extends Controller
     /**
      * ツイート一覧表示
      *
+     * @param Tweet $tweet
      * @return View
      */
-    public function index():View
+    public function index(Tweet $tweet):View
     {
-        $tweets = new Tweet();
-        $tweets = $tweets->index();
+        $tweets = $tweet->index();
         
         return view('tweet.index',compact('tweets'));
     }
@@ -62,7 +63,7 @@ class TweetController extends Controller
      */
     public function detail(Tweet $tweet):View
     {
-        $tweet->detail($tweet->id);
+        $tweet = $tweet->detail($tweet->id);
 
         return view('tweet.show', compact('tweet'));
     }
@@ -152,6 +153,46 @@ class TweetController extends Controller
             Log::error($e);
             
             return redirect()->route('tweet.index')->with('error', '検索に失敗しました！');
+        }
+    }
+
+    /**
+     * いいね機能
+     *
+     * @param Favorite $favorite
+     * @param Tweet $tweet
+     * @return RedirectResponse
+     */
+    public function favorite(Favorite $favorite, Tweet $tweet):RedirectResponse
+    {
+        try {
+            if (!$favorite->isFavorite($tweet->id)) $tweet->favorite();
+
+            return back();
+        } catch(\Exception $e) {
+            Log::error($e);
+
+            return back()->with('error', 'いいねできませんでした！');
+        }
+    }
+
+    /**
+     * いいね解除機能
+     *
+     * @param Favorite $favorite
+     * @param Tweet $tweet
+     * @return RedirectResponse
+     */
+    public function unfavorite(Favorite $favorite, Tweet $tweet):RedirectResponse
+    {
+        try {
+            if ($favorite->isFavorite($tweet->id)) $tweet->unfavorite();
+
+            return back();
+        } catch(\Exception $e) {
+            Log::error($e);
+
+            return back()->with('error', 'いいね解除できませんでした！');
         }
     }
 }
