@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
@@ -13,7 +12,7 @@ class Favorite extends Model
     use HasFactory;
 
     protected $guarded = ['user_id', 'tweet_id'];
-
+    
     /**
      * 既存いいねの確認
      *
@@ -21,9 +20,9 @@ class Favorite extends Model
      * @param integer $favoriteTweetId
      * @return boolean
      */
-    public function isFavorite(int $userId, int $favoriteTweetId ): bool
+    public function isFavorite(int $favoriteTweetId ): bool
     {
-        return Favorite::where('user_id', $userId)->where('tweet_id', $favoriteTweetId)->exists();
+        return Favorite::where('user_id', Auth::id())->where('tweet_id', $favoriteTweetId)->exists();
     }
 
     /**

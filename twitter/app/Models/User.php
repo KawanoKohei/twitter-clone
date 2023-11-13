@@ -22,8 +22,7 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
     use SoftDeletes;
 
-    /**
-     * The attributes that are mass assignable.
+    /** * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
@@ -163,35 +162,12 @@ class User extends Authenticatable
     }
 
     /**
-     * ツイートモデルとの多対多リレーション
+     * いいねテーブルを中間テーブルとするツイートモデルとの多対多リレーション
      *
      * @return BelongsToMany
      */
     public function favoriteTweets(): BelongsToMany
     {
-        return $this->belongsToMany(Tweet::class, 'favorites', 'user_id', 'tweet_id')
-            ->withPivot('created_at','updated_at');
-    }
-
-    /**
-     * いいね機能
-     *
-     * @param integer $tweet_id
-     * @return void
-     */
-    public function favorite(int $tweet_id):void
-    {
-        $this->favoriteTweets()->attach($tweet_id);
-    }
-
-    /**
-     * いいね解除機能
-     *
-     * @param integer $tweet_id
-     * @return void
-     */
-    public function unfavorite(int $tweet_id):void
-    {
-        $this->favoriteTweets()->detach($tweet_id);
+        return $this->belongsToMany(Tweet::class, 'favorites', 'user_id', 'tweet_id');
     }
 }  
