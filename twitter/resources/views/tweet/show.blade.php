@@ -22,23 +22,23 @@
                         <p class="card-text">{{ $tweet->user->name }}</p>
                         <p class="card-text">{{ $tweet->tweet }}</p>
                         @if($tweet->favorites_exists)
-                                    <form method="post" action="{{ route('tweet.unfavorite', $tweet) }}">
-                                        @csrf
-                                        @method('delete')
-                                        <div class="favorite-container">
-                                            <button type="submit" class="btn p-0 border-0" ><i class="fa-solid fa-heart" style="color: #f0056b;"></i></button>
-                                            <span class="like-count"> {{ $tweet->favorites_count }}</span>
-                                        </div>
-                                    </form>
-                                @else
-                                    <form method="post" action="{{ route('tweet.favorite', $tweet) }}">
-                                        @csrf
-                                        <div class="favorite-container">
-                                            <button type="submit" class="btn p-0 border-0"><i class="far fa-heart fa-fw"></i></button>
-                                            <span class="like-count"> {{ $tweet->favorites_count }}</span>
-                                        </div>
-                                    </form>
-                                @endif
+                            <form method="post" action="{{ route('tweet.unfavorite', $tweet) }}">
+                                @csrf
+                                @method('delete')
+                                <div class="favorite-container">
+                                    <button type="submit" class="btn p-0 border-0" ><i class="fa-solid fa-heart" style="color: #f0056b;"></i></button>
+                                    <span class="like-count"> {{ $tweet->favorites_count }}</span>
+                                </div>
+                            </form>
+                        @else
+                            <form method="post" action="{{ route('tweet.favorite', $tweet) }}">
+                                @csrf
+                                <div class="favorite-container">
+                                    <button type="submit" class="btn p-0 border-0"><i class="far fa-heart fa-fw"></i></button>
+                                    <span class="like-count"> {{ $tweet->favorites_count }}</span>
+                                </div>
+                            </form>
+                        @endif
                         @if ($tweet->user_id == Auth::id())
                             <button onclick="location.href='{{ route('tweet.edit', $tweet) }}'">編集</button>
                             <form method="post" action="{{ route('tweet.delete', $tweet) }}">
@@ -47,7 +47,7 @@
                                 <input type="submit" value="削除">
                             </form>
                         @endif
-                        <button onclick="location.href='{{ route('tweet.index') }}'">戻る</button>
+                        <button type="button" onclick="history.back()">戻る</button>
                     </div>
                 </div>
             </div>

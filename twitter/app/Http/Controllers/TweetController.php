@@ -206,9 +206,8 @@ class TweetController extends Controller
     public function getAllFavoriteTweet(Favorite $favorite, Tweet $tweet):View
     {
         $tweetIds = $favorite->getAllByUserId();
-        $tweetIdsArray = $tweetIds->toArray();
-        $tweets = $tweet->getAllByTweetIds($tweetIdsArray);
+        $tweets = $tweet->getAllByTweetIds($tweetIds);
 
-        return view('tweet.favorite',compact('tweets', 'favorite'));
+        return view('tweet.favorite',compact('tweets'));
     }
 }
