@@ -75,7 +75,13 @@ Route::group(['middleware' => 'auth'], function () {
     });
     Route::group(['prefix' => 'reply', 'as' => 'reply.'], function()
     {
-        //ツイート投稿作成
+        //リプライ投稿作成
         Route::post('store/{tweet}', [ReplyController::class, 'store'])->name('store');
+        //リプライ編集画面への遷移
+        Route::get('edit/{reply}', [ReplyController::class, 'edit'])->name('edit');
+        //リプライ編集
+        Route::put('update/{reply}', [ReplyController::class, 'update'])->name('update');
+        //リプライ削除  
+        Route::delete('delete/{reply}', [ReplyController::class, 'delete'])->name('delete');
     });
 });

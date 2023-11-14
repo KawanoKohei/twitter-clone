@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Follower;
+use App\Http\Requests\UpdateReplyRequest;
 use App\Models\Reply;
 use App\Models\Tweet;
 use Illuminate\Http\Request;
@@ -35,48 +36,38 @@ class ReplyController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show()
+    public function edit(Reply $reply)
     {
+        return view('reply.edit', compact('reply'));
+    }
+    
+    public function update(Reply $reply, UpdateReplyRequest $request)
+    {
+        try {
+            $this->authorize('update',$reply);
 
+            $reply->reply = $request->reply;
+            $reply->replyUpdate();
+
+            return redirect()->route('tweet.detail', $reply->tweet_id);
+        } catch(\Exception $e) {
+            Log::error($e);
+
+            return back()->with('error', 'リプライ編集できませんでした！');
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function delete(Reply $reply)
     {
-        //
-    }
+        try {
+            $this->authorize('delete',$reply);
+            $reply->replyDelete();
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+            return back();
+        } catch(\Exception $e) {
+            Log::error($e);
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+            return back()->with('error', '削除できませんでした！');
+        }
     }
 }
