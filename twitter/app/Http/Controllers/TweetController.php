@@ -66,7 +66,7 @@ class TweetController extends Controller
         $tweet = $tweet->detail($tweet->id);
         $replies = $tweet->replyIndex();
 
-        return view('tweet.show', compact('tweet'));
+        return view('tweet.show', compact('tweet','replies'));
     }
 
     /**
@@ -157,7 +157,7 @@ class TweetController extends Controller
         }
     }
 
-    /**
+    /** 
      * いいね機能
      *
      * @param Favorite $favorite
@@ -195,5 +195,20 @@ class TweetController extends Controller
 
             return back()->with('error', 'いいね解除できませんでした！');
         }
+    }
+
+    /**
+     * いいねしたツイート取得
+     *
+     * @param Favorite $favorite
+     * @param Tweet $tweet
+     * @return View
+     */
+    public function getAllFavoriteTweet(Favorite $favorite, Tweet $tweet):View
+    {
+        $tweetIds = $favorite->getAllByUserId();
+        $tweets = $tweet->getAllByTweetIds($tweetIds);
+
+        return view('tweet.favorite',compact('tweets'));
     }
 }

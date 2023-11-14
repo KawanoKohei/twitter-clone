@@ -13,7 +13,7 @@
                             <nav class="nav d-flex justify-content-between">
                                 <a href="{{ route('user.follows') }}">フォロー</a>
                                 <a href="{{ route('user.followers') }}">フォロー</a>
-                                <a href="{{ route('tweet.favorite') }}">いいね</a>
+                                <a href="{{ route('tweet.favoriteIndex') }}">いいね</a>
                             </nav>
                         </div>                        
                         <form method="get" action="{{ route('user.edit') }}">

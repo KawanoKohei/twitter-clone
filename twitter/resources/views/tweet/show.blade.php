@@ -19,6 +19,7 @@
                                 {{ session('message') }}
                             </div>
                         @endif
+                        {{-- 編集、削除ボタン --}}
                         @if ($tweet->user_id == Auth::id())
                             <div class="d-flex justify-content-end">
                                 <div class="dropdown">
@@ -36,42 +37,45 @@
                         @endif
                         <p class="card-text">{{ $tweet->user->name }}</p>
                         <p class="card-text">{{ $tweet->tweet }}</p>
-                        {{-- リプライアイコン --}}
-                        <div class="reply-container">
-                            <button onclick="location.href='{{ route('tweet.detail', $tweet) }}'" class="btn p-0 border-0">
-                                <i class="fa-solid fa-reply" style="color: #080410;"></i>
-                            </button>
-                            <span class="reply-count"> {{ $tweet->replies_count}}</span>
-                        </div>
-                        {{-- いいね機能 --}}
-                        @if($tweet->favorites_exists)
-                            <form method="post" action="{{ route('user.unfavorite', $tweet) }}">
-                                @csrf
-                                @method('delete')
-                                <div class="favorite-container">
-                                    <button type="submit" class="btn p-0 border-0" ><i class="fa-solid fa-heart" style="color: #f0056b;"></i></button>
-                                    <span class="like-count"> {{ $tweet->favorites_count }}</span>
-                                </div>
-                            </form>
-                        @else
-                            <form method="post" action="{{ route('tweet.favorite', $tweet) }}">
-                                @csrf
-                                <div class="favorite-container">
-                                    <button type="submit" class="btn p-0 border-0"><i class="far fa-heart fa-fw"></i></button>
-                                    <span class="like-count"> {{ $tweet->favorites_count }}</span>
-                                </div>
-                            </form>
-                        @endif
-                        {{-- リプライ機能 --}}
-                        <form method="post" action="{{ route('reply.store',$tweet) }}">
-                            @csrf
-                            <textarea type="text" name="replyMessage" class="form-control" placeholder="なんて返す？"></textarea><br>
-                            <div class="d-flex justify-content-end">
-                            <button type="submit" class="btn btn-outline-primary">リプライ</button>
+                        <div class="icon-container">
+                            {{-- リプライアイコン --}}
+                            <div class="reply-container">
+                                <button onclick="location.href='{{ route('tweet.detail', $tweet) }}'" class="btn p-0 border-0">
+                                    <i class="fa-solid fa-reply" style="color: #080410;"></i>
+                                </button>
+                                <span class="reply-count"> {{ $tweet->replies_count}}</span>
                             </div>
-                        </form>
+                            {{-- いいね機能 --}}
+                            @if($tweet->favorites_exists)
+                                <form method="post" action="{{ route('tweet.unfavorite', $tweet) }}">
+                                    @csrf
+                                    @method('delete')
+                                    <div class="favorite-container">
+                                        <button type="submit" class="btn p-0 border-0" ><i class="fa-solid fa-heart" style="color: #f0056b;"></i></button>
+                                        <span class="like-count"> {{ $tweet->favorites_count }}</span>
+                                    </div>
+                                </form>
+                            @else
+                                <form method="post" action="{{ route('tweet.favorite', $tweet) }}">
+                                    @csrf
+                                    <div class="favorite-container">
+                                        <button type="submit" class="btn p-0 border-0"><i class="far fa-heart fa-fw"></i></button>
+                                        <span class="like-count"> {{ $tweet->favorites_count }}</span>
+                                    </div>
+                                </form>
+                            @endif
+                        </div>
                     </div>
                 </div>
+                {{-- リプライ機能 --}}
+                <form method="post" action="{{ route('reply.store',$tweet) }}">
+                    @csrf
+                    <textarea type="text" name="replyMessage" class="form-control" placeholder="なんて返す？"></textarea>
+                    <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-outline-primary" >リプライ</button>
+                    </div>
+                </form>
+                {{-- リプライ一覧 --}}
                 @foreach ($replies as $reply)
                     <div class="card text-center mb-3">
                         <div class="card-body">
