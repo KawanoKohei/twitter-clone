@@ -156,7 +156,7 @@ class TweetController extends Controller
         }
     }
 
-    /**
+    /** 
      * いいね機能
      *
      * @param Favorite $favorite
@@ -166,7 +166,7 @@ class TweetController extends Controller
     public function favorite(Favorite $favorite, Tweet $tweet):RedirectResponse
     {
         try {
-            if (!$favorite->isFavorite($tweet->id)) $tweet->favorite();
+            if (!$favorite->isFavorite(Auth::id(), $tweet->id)) $tweet->favorite();
 
             return back();
         } catch(\Exception $e) {
@@ -186,7 +186,7 @@ class TweetController extends Controller
     public function unfavorite(Favorite $favorite, Tweet $tweet):RedirectResponse
     {
         try {
-            if ($favorite->isFavorite($tweet->id)) $tweet->unfavorite();
+            if ($favorite->isFavorite(Auth::id(), $tweet->id)) $tweet->unfavorite();
 
             return back();
         } catch(\Exception $e) {
@@ -194,5 +194,20 @@ class TweetController extends Controller
 
             return back()->with('error', 'いいね解除できませんでした！');
         }
+    }
+
+    /**
+     * いいねしたツイート取得
+     *
+     * @param Favorite $favorite
+     * @param Tweet $tweet
+     * @return View
+     */
+    public function getAllFavoriteTweets(Favorite $favorite, Tweet $tweet):View
+    {
+        $tweetIds = $favorite->getAllByUserId(Auth::id());
+        $tweets = $tweet->getAllByTweetIds($tweetIds);
+
+        return view('tweet.favorite',compact('tweets'));
     }
 }

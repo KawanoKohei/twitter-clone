@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -9,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection as SupportCollection;
 use Illuminate\Support\Facades\Auth;
 
 class Tweet extends Model
@@ -128,7 +130,7 @@ class Tweet extends Model
             ->paginate(5);
     }
 
-    /**
+    /** 
      * いいね機能
      *
      * @return void
@@ -146,5 +148,23 @@ class Tweet extends Model
     public function unfavorite():void
     {
         $this->favoriteUsers()->detach(Auth::id());
+    }
+
+    /**
+     * いいねツイート取得
+     *
+     * @param SupportCollection $tweetIds
+     * @return LengthAwarePaginator
+     */
+    public function getAllByTweetIds(SupportCollection $tweetIds):LengthAwarePaginator
+    {
+        return Tweet::query()
+            ->whereIn('id', $tweetIds)
+            ->with('user')
+            ->withExists([ 'favorites' => function ($isFavorite) {
+                $isFavorite->where('user_id', Auth::id());
+            }]) 
+            ->withCount('favorites')
+            ->paginate(5);
     }
 }
