@@ -20,11 +20,25 @@ class ReplyPolicy
         //
     }
 
+    /**
+     * リプライの編集におけるポリシー
+     *
+     * @param User $user
+     * @param Reply $reply
+     * @return boolean
+     */
     public function update(User $user, Reply $reply):bool
     {
         return $user->id === $reply->user_id;
     }
 
+    /**
+     * リプライ削除におけるポリシー
+     *
+     * @param User $user
+     * @param Reply $reply
+     * @return boolean
+     */
     public function delete(User $user, Reply $reply):bool
     {
         return $user->id === $reply->user_id;
