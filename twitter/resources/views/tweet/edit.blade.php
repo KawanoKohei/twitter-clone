@@ -17,7 +17,7 @@
                             </div>
                             <input type="submit" value="保存">
                         </form>
-                        <button onclick="location.href='{{ route('tweet.index') }}'">戻る</button>
+                        <button onclick="location.href='{{ route('tweet.index') }}'">キャンセル</button>
                     </div>
                 </div>
             </div>

@@ -6,6 +6,7 @@ use App\Http\Controllers\Follower;
 use App\Http\Requests\UpdateReplyRequest;
 use App\Models\Reply;
 use App\Models\Tweet;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -16,10 +17,12 @@ class ReplyController extends Controller
     /**
      * リプライの保存
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param Tweet $tweet
+     * @param Reply $reply
+     * @return RedirectResponse
      */
-    public function store(Request $request, Tweet $tweet, Reply $reply)
+    public function store(Request $request, Tweet $tweet, Reply $reply): RedirectResponse
     {
         try {
             $reply->user_id = Auth::id();
@@ -36,12 +39,25 @@ class ReplyController extends Controller
         }
     }
 
-    public function edit(Reply $reply)
+    /**
+     * リプライ編集画面表示
+     *
+     * @param Reply $reply
+     * @return View
+     */
+    public function edit(Reply $reply): View
     {
         return view('reply.edit', compact('reply'));
     }
     
-    public function update(Reply $reply, UpdateReplyRequest $request)
+    /**
+     * リプライ編集
+     *
+     * @param Reply $reply
+     * @param UpdateReplyRequest $request
+     * @return RedirectResponse
+     */
+    public function update(Reply $reply, UpdateReplyRequest $request): RedirectResponse
     {
         try {
             $this->authorize('update',$reply);
@@ -57,7 +73,13 @@ class ReplyController extends Controller
         }
     }
 
-    public function delete(Reply $reply)
+    /**
+     * リプライ削除
+     *
+     * @param Reply $reply
+     * @return RedirectResponse
+     */
+    public function delete(Reply $reply): RedirectResponse
     {
         try {
             $this->authorize('delete',$reply);

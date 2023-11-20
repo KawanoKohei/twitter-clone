@@ -71,7 +71,7 @@ Route::group(['middleware' => 'auth'], function () {
         //いいね解除
         Route::delete('unfavorite/{tweet}', [TweetController::class, 'unfavorite'])->name('unfavorite');
         //いいねツイート一覧
-        Route::get('favorite/index', [TweetController::class, 'getAllFavoriteTweet'])->name('favoriteIndex');
+        Route::get('favorite/index', [TweetController::class, 'getAllFavoriteTweets'])->name('favoriteIndex');
     });
     Route::group(['prefix' => 'reply', 'as' => 'reply.'], function()
     {

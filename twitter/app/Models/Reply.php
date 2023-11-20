@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
@@ -21,27 +22,42 @@ class Reply extends Model
         'reply',
     ];
 
+    /**
+     * ユーザーとのリレーション
+     *
+     * @return belongsTo
+     */
     public function user(): belongsTo
     {
         return $this->belongsTo(User::class);
     }
     
-    public function store()
+    /**
+     * リプライの保存
+     *
+     * @return void
+     */
+    public function store(): void
     {
         $this->save();
     }
 
-    public function show(int $tweetId)
-    {
-        return Reply::where('tweet_id')->get();
-    }
-
-    public function replyUpdate()
+    /**
+     * リプライの編集
+     *
+     * @return void
+     */
+    public function replyUpdate(): void
     {
         $this->update();
     }
 
-    public function replyDelete()
+    /**
+     * リプライの削除
+     *
+     * @return void
+     */
+    public function replyDelete(): void
     {
         $this->delete();
     }

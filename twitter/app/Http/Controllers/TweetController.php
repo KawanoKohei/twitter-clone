@@ -50,7 +50,7 @@ class TweetController extends Controller
      */
     public function index(Tweet $tweet):View
     {
-        $tweets = $tweet->index();
+        $tweets = $tweet->index(Auth::id());
         
         return view('tweet.index',compact('tweets'));
     }
@@ -63,7 +63,7 @@ class TweetController extends Controller
      */
     public function detail(Tweet $tweet):View
     {
-        $tweet = $tweet->detail($tweet->id);
+        $tweet = $tweet->detail(Auth::id(), $tweet->id);
         $replies = $tweet->replyIndex();
 
         return view('tweet.show', compact('tweet','replies'));
@@ -79,7 +79,7 @@ class TweetController extends Controller
     public function edit(Tweet $tweet):View|RedirectResponse
     {
         if (Auth::id() === $tweet->user_id) {
-            $tweet->detail($tweet->id);
+            $tweet->detail(Auth::id(), $tweet->id);
 
             return view('tweet.edit', compact('tweet'));
         } else {
@@ -167,7 +167,7 @@ class TweetController extends Controller
     public function favorite(Favorite $favorite, Tweet $tweet):RedirectResponse
     {
         try {
-            if (!$favorite->isFavorite($tweet->id)) $tweet->favorite();
+            if (!$favorite->isFavorite(Auth::id(), $tweet->id)) $tweet->favorite(Auth::id());
 
             return back();
         } catch(\Exception $e) {
@@ -187,7 +187,7 @@ class TweetController extends Controller
     public function unfavorite(Favorite $favorite, Tweet $tweet):RedirectResponse
     {
         try {
-            if ($favorite->isFavorite($tweet->id)) $tweet->unfavorite();
+            if ($favorite->isFavorite(Auth::id(), $tweet->id)) $tweet->unfavorite(Auth::id());
 
             return back();
         } catch(\Exception $e) {
@@ -204,10 +204,10 @@ class TweetController extends Controller
      * @param Tweet $tweet
      * @return View
      */
-    public function getAllFavoriteTweet(Favorite $favorite, Tweet $tweet):View
+    public function getAllFavoriteTweets(Favorite $favorite, Tweet $tweet):View
     {
-        $tweetIds = $favorite->getAllByUserId();
-        $tweets = $tweet->getAllByTweetIds($tweetIds);
+        $tweetIds = $favorite->getAllByUserId(Auth::id());
+        $tweets = $tweet->getAllByTweetIds(Auth::id(), $tweetIds);
 
         return view('tweet.favorite',compact('tweets'));
     }

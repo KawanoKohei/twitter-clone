@@ -20,9 +20,9 @@ class Favorite extends Model
      * @param integer $favoriteTweetId
      * @return boolean
      */
-    public function isFavorite(int $favoriteTweetId ): bool
+    public function isFavorite(int $user_id, int $favoriteTweetId ): bool
     {
-        return Favorite::where('user_id', Auth::id())
+        return Favorite::where('user_id', $user_id)
             ->where('tweet_id', $favoriteTweetId)
             ->exists();
     }
@@ -32,10 +32,10 @@ class Favorite extends Model
      *
      * @return Collection
      */
-    public function getAllByUserId(): Collection
+    public function getAllByUserId(int $user_id): Collection
     {
         return Favorite::query()
-            ->where('user_id', Auth::id())
+            ->where('user_id', $user_id)
             ->pluck('tweet_id');
     }
 }

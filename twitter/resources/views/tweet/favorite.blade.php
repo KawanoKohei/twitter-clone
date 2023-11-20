@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <div class="card text-center">
+                <div class="card text-center mb-3">
                     <div class="card-body">
                         <h5 class="card-title">いいねツイート一覧</h5>
                         @if (session('error'))
