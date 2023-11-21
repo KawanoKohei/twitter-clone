@@ -19,7 +19,7 @@ class Reply extends Model
     ];
 
     protected $fillable = [
-        'reply',
+        'text',
     ];
 
     /**
