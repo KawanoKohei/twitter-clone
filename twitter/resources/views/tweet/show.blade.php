@@ -100,7 +100,7 @@
                             @endif
                             <div class="card-body">
                                 <p class="card-text">{{ $reply->user->name }}</p>
-                                <p class="card-text">{{ $reply->reply }}</p>
+                                <p class="card-text">{{ $reply->text }}</p>
                             </div>
                         </div>
                     @endforeach

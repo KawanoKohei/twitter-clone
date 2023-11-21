@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use App\Const\TweetConst;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateReplyRequest extends FormRequest
+class ReplyRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,7 @@ class UpdateReplyRequest extends FormRequest
     public function rules():array
     {
         return [
-            'reply' =>  'required|string|between:1,' . TweetConst::TWEET_MAX_STRING,
+            'replyMessage' =>  'required|string|between:1,' . TweetConst::TWEET_MAX_STRING,
         ];
     }
 
@@ -37,8 +37,8 @@ class UpdateReplyRequest extends FormRequest
     public function messages():array
     {
         return [
-            'reply.required' => 'リプライを入力してください',
-            'reply.between' => '140文字以内で入力してください',
+            'replyMessage.required' => 'リプライを入力してください',
+            'replyMessage.between' => TweetConst::TWEET_MAX_STRING . '文字以内で入力してください',
         ];
     }
 }

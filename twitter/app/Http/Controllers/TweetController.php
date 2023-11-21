@@ -64,7 +64,7 @@ class TweetController extends Controller
     public function detail(Tweet $tweet):View
     {
         $tweet = $tweet->detail(Auth::id(), $tweet->id);
-        $replies = $tweet->replyIndex();
+        $replies = $tweet->getAllReply();
 
         return view('tweet.show', compact('tweet','replies'));
     }

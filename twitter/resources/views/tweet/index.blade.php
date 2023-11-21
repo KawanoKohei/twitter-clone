@@ -36,10 +36,10 @@
                     </div>
                 </div>
                 <div class="tweet-container">
-                    @foreach ($tweets as $tweet)
-                        <div class="card text-center mb-3">
-                            <div class="card-body">
-                                <ul class="list-group list-group-flush">
+                    <div class="card text-center mb-3">
+                        <div class="card-body">
+                            <ul class="list-group list-group-flush">
+                                @foreach ($tweets as $tweet)
                                     <a href="{{ route('tweet.detail', $tweet) }}" class="text-decoration-none">
                                         <li class="list-group-item">
                                             {{ $tweet->user->name }}<br><br>
@@ -76,11 +76,11 @@
                                             @endif
                                         </div>
                                     </div>
-                                </ul>
-                                {{ $tweets->links() }}
-                            </div>
+                                @endforeach
+                            </ul>
+                            {{ $tweets->links() }}
                         </div>
-                    @endforeach
+                    </div>
                 </div>
             </div>
         </div>

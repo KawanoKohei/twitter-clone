@@ -192,7 +192,7 @@ class Tweet extends Model
      *
      * @return Collection
      */
-    public function replyIndex():Collection
+    public function getAllReply():Collection
     {
         return $this->replies()
             ->with('user')

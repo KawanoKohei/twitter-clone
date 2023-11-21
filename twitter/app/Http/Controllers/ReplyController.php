@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Follower;
-use App\Http\Requests\UpdateReplyRequest;
+use App\Http\Requests\ReplyRequest;
 use App\Models\Reply;
 use App\Models\Tweet;
 use Illuminate\Http\RedirectResponse;
@@ -17,17 +17,17 @@ class ReplyController extends Controller
     /**
      * リプライの保存
      *
-     * @param Request $request
+     * @param ReplyRequest $request
      * @param Tweet $tweet
      * @param Reply $reply
      * @return RedirectResponse
      */
-    public function store(Request $request, Tweet $tweet, Reply $reply): RedirectResponse
+    public function store(ReplyRequest $request, Tweet $tweet, Reply $reply): RedirectResponse
     {
         try {
             $reply->user_id = Auth::id();
             $reply->tweet_id = $tweet->id;
-            $reply->reply = $request->replyMessage;
+            $reply->text = $request->replyMessage;
     
             $reply->store();
     
@@ -35,7 +35,7 @@ class ReplyController extends Controller
         } catch(\Exception $e) {
             Log::error($e);
 
-            return back()->with('error', 'いいね解除できませんでした！');
+            return back()->with('error', 'リプライできませんでした！');
         }
     }
 
@@ -54,15 +54,15 @@ class ReplyController extends Controller
      * リプライ編集
      *
      * @param Reply $reply
-     * @param UpdateReplyRequest $request
+     * @param ReplyRequest $request
      * @return RedirectResponse
      */
-    public function update(Reply $reply, UpdateReplyRequest $request): RedirectResponse
+    public function update(Reply $reply, ReplyRequest $request): RedirectResponse
     {
         try {
             $this->authorize('update',$reply);
 
-            $reply->reply = $request->reply;
+            $reply->text = $request->replyMessage;
             $reply->replyUpdate();
 
             return redirect()->route('tweet.detail', $reply->tweet_id);

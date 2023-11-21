@@ -18,9 +18,9 @@
                                 <h5>{{ $message }}</h5>
                             @enderror
                             <div class="card-text">
-                                <textarea name="reply" cols="70" rows="5" value="{{ old('reply') ?? $reply->reply }}"></textarea>
+                                <textarea name="replyMessage" cols="70" rows="5" value="{{ old('reply') ?? $reply->reply }}"></textarea>
                             </div>
-                            <input type="submit" value="保存">
+                            <button>保存</button>
                         </form>
                     </div>
                 </div>
