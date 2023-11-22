@@ -47,7 +47,7 @@ class Reply extends Model
      *
      * @return void
      */
-    public function replyUpdate(): void
+    public function edit(): void
     {
         $this->update();
     }
@@ -57,7 +57,7 @@ class Reply extends Model
      *
      * @return void
      */
-    public function replyDelete(): void
+    public function deleteReply(): void
     {
         $this->delete();
     }

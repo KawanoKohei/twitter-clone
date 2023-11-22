@@ -25,7 +25,7 @@ class ReplyRequest extends FormRequest
     public function rules():array
     {
         return [
-            'replyMessage' =>  'required|string|between:1,' . TweetConst::TWEET_MAX_STRING,
+            'replyMessage' =>  'required|string|between:' . TweetConst::TWEET_MINI_STRING . ',' . TweetConst::TWEET_MAX_STRING,
         ];
     }
 

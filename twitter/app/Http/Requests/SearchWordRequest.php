@@ -25,7 +25,7 @@ class SearchWordRequest extends FormRequest
     public function rules():array
     {
         return [
-            'searchWord' => 'required|string|max:' . \App\Const\TweetConst::TWEET_MAX_STRING
+            'searchWord' => 'required|string|between:' . TweetConst::TWEET_MINI_STRING . ',' . TweetConst::TWEET_MAX_STRING,
         ];
     }
 
@@ -38,7 +38,7 @@ class SearchWordRequest extends FormRequest
     {
         return [
             'searchWord.required' => '検索ワードを入力してください',
-            'searchWord.max' => '140文字以内で入力してください',
+            'searchWord.max' => TweetConst::TWEET_MAX_STRING . '文字以内で入力してください',
         ];
     }
 }

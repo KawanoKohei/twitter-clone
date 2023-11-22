@@ -25,7 +25,7 @@ class UpdateTweetRequest extends FormRequest
     public function rules():array
     {
         return [
-            'tweet' => 'required|string|between:1,' . TweetConst::TWEET_MAX_STRING,
+            'tweet' => 'required|string|between:' . TweetConst::TWEET_MINI_STRING . ',' . TweetConst::TWEET_MAX_STRING,
         ];
     }
 

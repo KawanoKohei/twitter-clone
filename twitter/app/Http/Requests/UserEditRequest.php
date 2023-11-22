@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Const\TweetConst;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UserEditRequest extends FormRequest
@@ -24,7 +25,7 @@ class UserEditRequest extends FormRequest
     public function rules():array
     {
         return [
-            'name' => 'required|between:0,255',
+            'name' => 'required|between:' . TweetConst::TWEET_MINI_STRING . ',' . TweetConst::TWEET_MAX_STRING,
             'email' => 'required|email:filter,dns',
         ];
     }
@@ -38,7 +39,7 @@ class UserEditRequest extends FormRequest
     {
         return [
             'name.required' => '名前は必須項目です。必ず入力してください',
-            'name.between' => '255文字以内で入力してください',
+            'name.between' => TweetConst::TWEET_MAX_STRING . '文字以内で入力してください',
             'email.required' => 'メールアドレスは必須項目です。必ず入力してください',
             'email.email' => 'メールアドレスの書式に誤りがあります。メールアドレスを正しく入力しなおしてください。',
         ];

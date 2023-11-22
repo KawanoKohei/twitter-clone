@@ -22,7 +22,11 @@ class ReplyController extends Controller
      * @param Reply $reply
      * @return RedirectResponse
      */
-    public function store(ReplyRequest $request, Tweet $tweet, Reply $reply): RedirectResponse
+    public function store(
+        ReplyRequest $request, 
+        Tweet $tweet, 
+        Reply $reply
+    ): RedirectResponse
     {
         try {
             $reply->user_id = Auth::id();
@@ -63,7 +67,7 @@ class ReplyController extends Controller
             $this->authorize('update',$reply);
 
             $reply->text = $request->replyMessage;
-            $reply->replyUpdate();
+            $reply->edit();
 
             return redirect()->route('tweet.detail', $reply->tweet_id);
         } catch(\Exception $e) {
@@ -83,7 +87,7 @@ class ReplyController extends Controller
     {
         try {
             $this->authorize('delete',$reply);
-            $reply->replyDelete();
+            $reply->deleteReply();
 
             return back();
         } catch(\Exception $e) {
