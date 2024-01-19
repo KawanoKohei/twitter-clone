@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <div class="card text-center">
+                <div class="card text-center mb-3">
                     <div class="card-body">
                         <h5 class="card-title">いいねツイート一覧</h5>
                         @if (session('error'))
@@ -12,8 +12,8 @@
                                 {{ session('error') }}
                             </div>
                         @endif
-                        @foreach ($tweets as $tweet)
-                            <ul class="list-group list-group-flush">
+                        <ul class="list-group list-group-flush">
+                            @foreach ($tweets as $tweet)
                                 <a href="{{ route('tweet.detail', $tweet) }}" class="text-decoration-none">
                                     <li class="list-group-item">
                                         {{ $tweet->user->name }}<br><br>
@@ -38,8 +38,8 @@
                                         </div>
                                     </form>
                                 @endif
-                            </ul>
-                        @endforeach
+                            @endforeach
+                        </ul>
                         {{ $tweets->links() }}
                     </div>
                 </div>

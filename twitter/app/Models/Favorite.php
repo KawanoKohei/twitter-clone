@@ -26,7 +26,7 @@ class Favorite extends Model
             ->where('tweet_id', $favoriteTweetId)
             ->exists();
     }
-
+    
     /**
      * いいねツイートID取得
      *

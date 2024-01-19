@@ -6,18 +6,22 @@
             <div class="col-md-8">
                 <div class="card text-center">
                     <div class="card-body">
-                        <form method="post" action="{{ route('tweet.update',$tweet)}} ">
+                        @if(session('message'))
+                            <div class="alert alert-danger">
+                                {{ session('message') }}
+                            </div>
+                        @endif
+                        <form method="post" action="{{ route('reply.update',$reply)}} ">
                             @csrf
                             @method('put')
-                            @error('tweet')
+                            @error('replyMessage')
                                 <h5>{{ $message }}</h5>
                             @enderror
                             <div class="card-text">
-                                <textarea name="tweet" cols="70" rows="5" value="{{ old('tweet') ?? $tweet->tweet }}"></textarea>
+                                <textarea name="replyMessage" cols="70" rows="5" value="{{ old('reply') ?? $reply->text }}"></textarea>
                             </div>
-                            <input type="submit" value="保存">
+                            <button>保存</button>
                         </form>
-                        <button onclick="location.href='{{ route('tweet.index') }}'">キャンセル</button>
                     </div>
                 </div>
             </div>

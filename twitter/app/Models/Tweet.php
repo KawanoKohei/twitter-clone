@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Reply;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -29,6 +30,16 @@ class Tweet extends Model
     }
 
     /**
+     * リプライテーブルとのリレーション
+     *
+     * @return HasMany
+     */
+    public function replies(): HasMany
+    {
+        return $this->hasMany(Reply::class);
+    }
+    
+    /** 
      * いいねテーブルを中間テーブルとするユーザーモデルとの多対多リレーション
      *
      * @return BelongsToMany
@@ -62,15 +73,17 @@ class Tweet extends Model
     /**
      * ツイート一覧の表示
      *
+     * @param int $userId
      * @return LengthAwarePaginator
      */
-    public function index():LengthAwarePaginator
+    public function index(int $userId):LengthAwarePaginator
     {
         return $this->with('user')
-            ->withExists([ 'favorites' => function ($isFavorite) {
-                $isFavorite->where('user_id', Auth::id());
+            ->withExists([ 'favorites' => function ($isFavorite) use ($userId) {
+                $isFavorite->where('user_id', $userId);
             }]) 
             ->withCount('favorites')
+            ->withCount('replies')
             ->orderBy('updated_at', 'desc')
             ->paginate(6);
     }
@@ -78,16 +91,18 @@ class Tweet extends Model
     /**
      * ツイート詳細表示
      *
+     * @param int $userId
      * @param int $tweetId
      * @return Tweet
      */
-    public function detail(int $tweetId):Tweet
+    public function detail(int $userId, int $tweetId):Tweet
     {
         return $this->with('user')
-            ->withExists([ 'favorites' => function ($isFavorite) {
-                $isFavorite->where('user_id', Auth::id());
+            ->withExists([ 'favorites' => function ($isFavorite) use ($userId) {
+                $isFavorite->where('user_id', $userId);
             }]) 
             ->withCount('favorites')
+            ->withCount('replies')
             ->find($tweetId);
     }
 
@@ -129,42 +144,59 @@ class Tweet extends Model
             ->orderBy('updated_at', 'desc')
             ->paginate(5);
     }
+    
 
     /** 
      * いいね機能
      *
+     * @param int $userId
      * @return void
      */
-    public function favorite():void
+    public function favorite(int $userId):void
     {
-        $this->favoriteUsers()->attach(Auth::id());
+        $this->favoriteUsers()->attach($userId);
     }
 
     /**
      * いいね解除機能
      *
+     * @param int $userId
      * @return void
      */
-    public function unfavorite():void
+    public function unfavorite(int $userId):void
     {
-        $this->favoriteUsers()->detach(Auth::id());
+        $this->favoriteUsers()->detach($userId);
     }
 
     /**
      * いいねツイート取得
      *
+     * @param int $userId
      * @param SupportCollection $tweetIds
      * @return LengthAwarePaginator
      */
-    public function getAllByTweetIds(SupportCollection $tweetIds):LengthAwarePaginator
+    public function getAllByTweetIds(int $userId, SupportCollection $tweetIds):LengthAwarePaginator
     {
         return Tweet::query()
             ->whereIn('id', $tweetIds)
             ->with('user')
-            ->withExists([ 'favorites' => function ($isFavorite) {
-                $isFavorite->where('user_id', Auth::id());
+            ->withExists([ 'favorites' => function ($isFavorite) use ($userId) {
+                $isFavorite->where('user_id', $userId);
             }]) 
             ->withCount('favorites')
             ->paginate(5);
+    }
+
+    /**
+     * リプライ一覧機能
+     *
+     * @return Collection
+     */
+    public function getAllReply():Collection
+    {
+        return $this->replies()
+            ->with('user')
+            ->orderBy('created_at', 'desc')
+            ->get();
     }
 }

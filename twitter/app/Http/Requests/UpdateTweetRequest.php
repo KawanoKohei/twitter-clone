@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Const\TweetConst;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateTweetRequest extends FormRequest
@@ -24,7 +25,7 @@ class UpdateTweetRequest extends FormRequest
     public function rules():array
     {
         return [
-            'tweet' => 'required|between:1,200',
+            'tweet' => 'required|string|between:' . TweetConst::TWEET_MINI_STRING . ',' . TweetConst::TWEET_MAX_STRING,
         ];
     }
 
@@ -37,7 +38,7 @@ class UpdateTweetRequest extends FormRequest
     {
         return [
             'tweet.required' => 'ツイートを入力してください',
-            'tweet.between' => '200文字以内で入力してください',
+            'tweet.between' => TweetConst::TWEET_MAX_STRING . '文字以内で入力してください',
         ];
     }
 }

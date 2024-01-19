@@ -5,27 +5,27 @@ namespace App\Http\Requests;
 use App\Const\TweetConst;
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateTweetRequest extends FormRequest
+class ReplyRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
      */
-    public function authorize():bool
+    public function authorize()
     {
-        return $this->path() == 'tweet/create';
+        return true;
     }
 
     /**
-     * ツイートにおけるバリデーション
+     * リプライ更新におけるバリデーション
      *
      * @return array
      */
     public function rules():array
     {
         return [
-            'tweet' => 'required|between:' . TweetConst::TWEET_MINI_STRING . ',' . TweetConst::TWEET_MAX_STRING,
+            'replyMessage' =>  'required|string|between:' . TweetConst::TWEET_MINI_STRING . ',' . TweetConst::TWEET_MAX_STRING,
         ];
     }
 
@@ -37,8 +37,8 @@ class CreateTweetRequest extends FormRequest
     public function messages():array
     {
         return [
-            'tweet.required' => 'ツイートを入力してください',
-            'tweet.between' => TweetConst::TWEET_MAX_STRING . '文字以内で入力してください',
+            'replyMessage.required' => 'リプライを入力してください',
+            'replyMessage.between' => TweetConst::TWEET_MAX_STRING . '文字以内で入力してください',
         ];
     }
 }
