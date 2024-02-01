@@ -12,7 +12,7 @@
                         <div class="nav-scroller py-1 mb-2">
                             <nav class="nav d-flex justify-content-between">
                                 <a href="{{ route('user.follows') }}">フォロー</a>
-                                <a href="{{ route('user.followers') }}">フォロー</a>
+                                <a href="{{ route('user.followers') }}">フォロワー</a>
                                 <a href="{{ route('tweet.favoriteIndex') }}">いいね</a>
                             </nav>
                         </div>                        
